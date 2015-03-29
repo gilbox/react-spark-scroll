@@ -19,7 +19,7 @@ function spark(element, timeline) {
 
   // @todo: move this out of here (it should only happen 1x)
   var animator = hasAnimateAttr && sparkAnimator.instance();
-  
+
   var actor = isAnimated && animator.addActor({
       context: element
     });
