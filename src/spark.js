@@ -15,7 +15,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
 
   const eventEmitter = new EventEmitter2({maxListener:0});
 
-  function spark(element, timeline, options) {
+  function spark(element, proxyElement, timeline, options) {
 
     const callback = options.callback;
     var prevRatio = 0;
@@ -38,7 +38,6 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
     var data = null;
     var sparkData = null;
     var container = document.documentElement;
-    var triggerElement = element;
 
     const actionsUpdate = function() {
       var a, actionProp, c, d, idx, o, prop, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3;
@@ -125,14 +124,14 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
       }
 
       changed = false;
-      rect = triggerElement.getBoundingClientRect();
+      rect = proxyElement.getBoundingClientRect();
       containerRect = container.getBoundingClientRect();
 
       for (scrY in sparkData) {
         keyFrame = sparkData[scrY];
         if (!keyFrame.formula) continue;
 
-        newScrY = keyFrame.formula.fn(triggerElement, container, rect, containerRect, keyFrame.formula.offset);
+        newScrY = keyFrame.formula.fn(proxyElement, container, rect, containerRect, keyFrame.formula.offset);
         if (newScrY !== ~~scrY) {
           changed = true;
           if (keyFrame.anims && allowAnimation) {
@@ -181,7 +180,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
       let animCount = 0;
       sparkData = {};
       actionFrames = [];
-      rect = triggerElement.getBoundingClientRect();
+      rect = proxyElement.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
       for (scrY in data) {
         let keyFrame = data[scrY];
@@ -196,7 +195,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
             offset: ~~parts[2]
           };
 
-          scrY = formula.fn(triggerElement, container, rect, containerRect, formula.offset);
+          scrY = formula.fn(proxyElement, container, rect, containerRect, formula.offset);
           if (sparkData[scrY]) {
             if (sparkSetup.debug) {
               console.log("warning: spark-scroll failed to calculate formulas", data);

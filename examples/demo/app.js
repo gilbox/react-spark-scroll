@@ -1,5 +1,5 @@
 var React = require('react');
-var {SparkScroll} = require('./app-spark');
+var {SparkScroll, SparkProxy} = require('./app-spark');
 
 var App = React.createClass({
 
@@ -21,17 +21,20 @@ var App = React.createClass({
     return (
       <div style={styles}>
         <div style={{height:'200px'}}></div>
+        <SparkProxy proxyId="p1" />
         <SparkScroll
+          proxy="p1"
+          style={{display:'inline-block'}}
           callback={(r) => console.log('callback @ ratio:', r)}
           timeline={{
             topTop:{
               opacity:'0.3',
-              transform:'translateX(151px)',
+              transform:'translateX(151px) rotate(180deg)',
               color:'#00f',
               'onUp,onDown': (actionType) => this.setState({actionType}) },
             centerCenter:{
               opacity:'1.0',
-              transform:'translateX(0px)',
+              transform:'translateX(0px) rotate(0deg)',
               color:'#f00'}
           }}>
           <div style={{color:'inherit'}}>Hello World!</div>

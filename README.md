@@ -12,6 +12,7 @@ WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 - onScroll `callback` prop (previously in angular was `spark-scroll-callback` attribute)
 - Custom formulas, actionProps
 - sparkSetup
+- `SparkProxy` (in angular called `sparkTrigger`)
 - Invalidation
     * Manual invalidation mechanism
     * Invalidation interval
@@ -25,7 +26,6 @@ WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 - Demo
 - Support for GSAP
 - publish to npm
-- trigger proxy element option
 
 ### Probably Won't do:
 
