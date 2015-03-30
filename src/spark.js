@@ -5,12 +5,9 @@ var AnimationFrame = require('animation-frame');
 var sparkAnimator = {
   instance: () => new Rekapi(document.body)
 };
-var hasAnimateAttr = true;
-var isAnimated = true;
+var allowAnimation = true;
 
 function spark(element, timeline) {
-  if (hasAnimateAttr && sparkSetup.disableSparkScrollAnimate) return;
-  if (!hasAnimateAttr && sparkSetup.disableSparkScroll) return;
 
   var callback = false;
   var prevRatio = 0;
@@ -18,11 +15,13 @@ function spark(element, timeline) {
   var maxScrollY = 0;
 
   // @todo: move this out of here (it should only happen 1x)
-  var animator = hasAnimateAttr && sparkAnimator.instance();
+  var animator = allowAnimation && sparkAnimator.instance();
 
-  var actor = isAnimated && animator.addActor({
+  var actor = animator && animator.addActor({
       context: element
     });
+
+  var isAnimated = true;
 
   var actionFrames = [];
   var actionFrameIdx = -1;
@@ -91,6 +90,52 @@ function spark(element, timeline) {
     actionsUpdate(); // sets updating = false
   };
 
+  var recalcFormulas = function() {
+    var changed, containerRect, keyFrame, kf, newScrY, rect, scrY;
+
+    if (!sparkData) {
+      parseData();
+      if (! sparkData) return;
+    }
+
+    changed = false;
+    rect = triggerElement.getBoundingClientRect();
+    containerRect = container.getBoundingClientRect();
+
+    for (scrY in sparkData) {
+      keyFrame = sparkData[scrY];
+      if (!keyFrame.formula) continue;
+
+      newScrY = keyFrame.formula.fn(triggerElement, container, rect, containerRect, keyFrame.formula.offset);
+      if (newScrY !== ~~scrY) {
+        changed = true;
+        if (keyFrame.anims && allowAnimation) {
+          actor.moveKeyframe(~~scrY, newScrY);
+        }
+        sparkData[newScrY] = keyFrame;
+        delete sparkData[scrY];
+      }
+    }
+
+    if (changed) {
+      if (callback) {
+        recalcMinMax();
+      }
+      actionFrames = [];
+      for (scrY in sparkData) {
+        kf = sparkData[scrY];
+        if (kf.actionCount) {
+          actionFrames.push(~~scrY);
+        }
+      }
+      actionFrames.sort(function(a, b) {
+        return a > b;
+      });
+      return onScroll();
+    }
+
+  };
+
   var parseData = function parseData(data) {
     var c, ease;
     var k, o, parts, rect, scrY, formula;
@@ -100,7 +145,7 @@ function spark(element, timeline) {
     }
     data = _.clone(data);
 
-    if (hasAnimateAttr) {
+    if (allowAnimation) {
       actor.removeAllKeyframes();
     }
 
@@ -171,7 +216,7 @@ function spark(element, timeline) {
         }
       }
 
-      if (keyFrame.anims && hasAnimateAttr) {
+      if (keyFrame.anims && allowAnimation) {
         actor.keyframe(scrY, keyFrame.anims, ease);
         animCount++;
       }
@@ -185,7 +230,7 @@ function spark(element, timeline) {
       }
     }
 
-    isAnimated = hasAnimateAttr && !!animCount;
+    isAnimated = !!animCount;
     if (isAnimated) {
       actor.finishedAddingKeyframes && actor.finishedAddingKeyframes();
     }
@@ -222,13 +267,22 @@ function spark(element, timeline) {
     }
   };
 
+  var onInvalidate = debounce(recalcFormulas, 100);
+
   window.addEventListener('scroll', onScroll, false);
-  //window.addEventListener('onresize', onInvalidate, false);
+  window.addEventListener('resize', onInvalidate, false);
 
   parseData(timeline);
 
 }
 
+function debounce(fn, wait) {
+  var t;
+  return () => {
+    clearTimeout(t);
+    t = setTimeout(fn, wait);
+  };
+}
 
 var sparkSetup = {
   debug: true,

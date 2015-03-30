@@ -9,11 +9,11 @@ WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 - Keyframe animations w/Rekapi
 - Formulas
 - Actions (only supports `onUp` and `onDown` with different callback semantics than `spark-scroll`)
+- Automatic invalidation on window resize
 
 ### Todo:
 
 - Invalidation
-    * Automatic invalidation on window resize
     * Manual invalidation mechanism
     * Invalidation interval
 
@@ -26,6 +26,7 @@ WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 - Custom formulas, actionProps
 - sparkSetup
 - publish to npm
+- trigger proxy element option
 
 ### Probably Won't do:
 
