@@ -9,22 +9,21 @@ WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 - Keyframe animations w/Rekapi
 - Formulas
 - Actions (only supports `onUp` and `onDown` with different callback semantics than `spark-scroll`)
-- Automatic invalidation on window resize
 - onScroll `callback` prop (previously in angular was `spark-scroll-callback` attribute)
-
-### Todo:
-
+- Custom formulas, actionProps
+- sparkSetup
 - Invalidation
     * Manual invalidation mechanism
     * Invalidation interval
+    * Automatic invalidation on window resize
+
+### Todo:
 
 - Test on various browsers
 - Re-parsing of data when changed
 - README
 - Demo
 - Support for GSAP
-- Custom formulas, actionProps
-- sparkSetup
 - publish to npm
 - trigger proxy element option
 

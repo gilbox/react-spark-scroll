@@ -46,6 +46,8 @@
   },
   "dependencies": {
     "animation-frame": "^0.2.4",
+    "eventemitter2": "^0.4.14",
+    "events": "^1.0.2",
     "lodash": "^3.6.0",
     "object-assign": "^2.0.0",
     "rekapi": "^1.4.4"

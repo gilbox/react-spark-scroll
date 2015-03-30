@@ -34,7 +34,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      'react-spark-scroll': '../../src/index',
+      'react-spark-scroll': '../../src/',
       'underscore': 'lodash'
     }
   },

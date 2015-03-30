@@ -1,5 +1,5 @@
 var React = require('react');
-var SparkScroll = require('react-spark-scroll');
+var {SparkScroll} = require('./app-spark');
 
 var App = React.createClass({
 
