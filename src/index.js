@@ -1,10 +1,10 @@
 const React = require('react');
-const _spark = require('./spark');
+const sparkFactory = require('./spark');
 
 function factory(options) {
 
   const proxyElements = {};
-  const spark = _spark(options);
+  const spark = sparkFactory(options);
   const {
     invalidate,
     enableInvalidationInterval,
@@ -25,6 +25,7 @@ function factory(options) {
       }
 
       var element = React.findDOMNode(this);
+      
       spark(
         element,
         proxyElements[this.props.proxy] || element,
