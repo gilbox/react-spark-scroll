@@ -254,16 +254,23 @@ function spark(element, timeline) {
     return actionsUpdate();
   };
 
+  var nonAnimatedUpdate = function() {
+    //if (callback) {
+    //  doCallback();
+    //}
+    return actionsUpdate();
+  };
+
   var onScroll = function() {
     scrollY = window.pageYOffset;
     if (!updating) {
       updating = true;
-      //if (isAnimated) {
-      return animationFrame.request(update);
-      //} else {
-      //  y = scrollY;
-      //  return animationFrame.request(nonAnimatedUpdate);
-      //}
+      if (isAnimated) {
+        return animationFrame.request(update);
+      } else {
+        y = scrollY;
+        return animationFrame.request(nonAnimatedUpdate);
+      }
     }
   };
 
