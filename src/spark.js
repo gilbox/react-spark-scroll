@@ -7,9 +7,9 @@ var sparkAnimator = {
 };
 var allowAnimation = true;
 
-function spark(element, timeline) {
+function spark(element, timeline, options) {
 
-  var callback = false;
+  var callback = options.callback;
   var prevRatio = 0;
   var minScrollY = 0;
   var maxScrollY = 0;
@@ -86,8 +86,29 @@ function spark(element, timeline) {
   var update = function () {
     y = scrollY;
     animator.update(y);
-    //callback && doCallback();
+    callback && doCallback();
     actionsUpdate(); // sets updating = false
+  };
+
+  var recalcMinMax = function() {
+    var scrY, idx = 0;
+    for (scrY in sparkData) {
+      scrY = ~~ scrY;
+      if (idx++) {
+        if (scrY > maxScrollY) maxScrollY = scrY;
+        else if (scrY < minScrollY) minScrollY = scrY;
+      } else {
+        maxScrollY = minScrollY = scrY
+      }
+    }
+  };
+
+  var doCallback = function() {
+    var ratio = Math.max(0, Math.min((y - minScrollY) / (maxScrollY - minScrollY), 1));
+    if (ratio !== prevRatio) {
+      callback(ratio);
+    }
+    prevRatio = ratio;
   };
 
   var recalcFormulas = function() {
@@ -131,8 +152,10 @@ function spark(element, timeline) {
       actionFrames.sort(function(a, b) {
         return a > b;
       });
-      return onScroll();
+      onScroll();
     }
+
+    console.log("-->sparkData: ", sparkData);
 
   };
 
@@ -240,7 +263,7 @@ function spark(element, timeline) {
     });
 
     if (callback) {
-      //recalcMinMax();
+      recalcMinMax();
     }
 
     y = prevy = scrollY = window.pageYOffset;
@@ -255,9 +278,9 @@ function spark(element, timeline) {
   };
 
   var nonAnimatedUpdate = function() {
-    //if (callback) {
-    //  doCallback();
-    //}
+    if (callback) {
+      doCallback();
+    }
     return actionsUpdate();
   };
 

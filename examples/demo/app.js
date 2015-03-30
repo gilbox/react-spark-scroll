@@ -22,6 +22,7 @@ var App = React.createClass({
       <div style={styles}>
         <div style={{height:'200px'}}></div>
         <SparkScroll
+          callback={(r) => console.log('callback @ ratio:', r)}
           timeline={{
             topTop:{
               opacity:'0.3',

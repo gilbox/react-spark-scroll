@@ -10,6 +10,7 @@ WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 - Formulas
 - Actions (only supports `onUp` and `onDown` with different callback semantics than `spark-scroll`)
 - Automatic invalidation on window resize
+- onScroll `callback` prop (previously in angular was `spark-scroll-callback` attribute)
 
 ### Todo:
 
@@ -19,7 +20,6 @@ WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 
 - Test on various browsers
 - Re-parsing of data when changed
-- onScroll callback (`spark-scroll-callback` attribute)
 - README
 - Demo
 - Support for GSAP

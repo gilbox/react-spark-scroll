@@ -10,7 +10,7 @@ var SparkScroll = React.createClass({
   },
 
   componentDidMount() {
-    spark(React.findDOMNode(this), this.props.timeline);
+    spark(React.findDOMNode(this), this.props.timeline, this.props);
   }
 });
 
