@@ -337,9 +337,7 @@ function debounce(fn, wait) {
 }
 
 const _sparkSetup = {
-  debug: true,
-  disableSparkScrollAnimate: false,
-  disableSparkScroll: false
+  debug: true
 };
 
 const _sparkFormulas = {
