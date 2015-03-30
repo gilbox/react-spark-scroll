@@ -1,8 +1,7 @@
 var assign = require('object-assign');
 var _ = require('lodash');
 var AnimationFrame = require('animation-frame');
-//var EventEmitter2 = require('eventemitter2').EventEmitter2;
-var EventEmitter2 = require('events').EventEmitter;
+var EventEmitter = require('events').EventEmitter;
 
 function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomatically}) {
 
@@ -13,7 +12,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
   const sparkActionProps = actionProps ? assign({}, _sparkActionProps, actionProps) : _sparkActionProps;
   const sparkSetup = setup ? assign({}, _sparkSetup, setup) : _sparkSetup;
 
-  const eventEmitter = new EventEmitter2({maxListener:0});
+  const eventEmitter = new EventEmitter({maxListener:0});
 
   function spark(element, proxyElement, timeline, options) {
 
