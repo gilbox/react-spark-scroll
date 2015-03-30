@@ -182,7 +182,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
       rect = proxyElement.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
       for (scrY in data) {
-        let keyFrame = data[scrY];
+        let keyFrame = data[scrY] || {};
         keyFrame = _.clone(keyFrame);
         let actionCount = 0;
         c = scrY.charCodeAt(0);
