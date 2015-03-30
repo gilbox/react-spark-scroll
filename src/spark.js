@@ -14,7 +14,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
 
   const eventEmitter = new EventEmitter({maxListener:0});
 
-  function spark(element, proxyElement, timeline, options) {
+  const spark = function(element, proxyElement, timeline, options) {
 
     const callback = options.callback;
     var prevRatio = 0;
