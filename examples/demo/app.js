@@ -31,8 +31,8 @@ var Hero = React.createClass({
           <SparkScroll.h1
             proxy="hero"
             timeline={{
-              topTop: { opacity: 1, transform: 'translate3d(0px,0px,0px)' },
-              'topTop+200': { opacity: 0, transform: 'translate3d(0px,250px,0px)' }
+              topTop: { opacity: 1, transform: 'translate3d(0px,150px,0px)' },
+              'topTop+200': { opacity: 0, transform: 'translate3d(0px,100px,0px)' }
             }}>
 
             <SparkScroll.span
