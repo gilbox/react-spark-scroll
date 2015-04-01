@@ -210,7 +210,7 @@ var App = React.createClass({
 
         <div className="spacer50"></div>
 
-        <!-- parallax -->
+        {/* parallax */}
         <a href="https://www.flickr.com/photos/rafagarcia_/15262287738/in/pool-83823859@N00/">
           <SparkProxy.div proxyId="parallax" className="parallax-cont">
             <div className="parallax-shadow"></div>
