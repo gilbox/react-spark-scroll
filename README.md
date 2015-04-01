@@ -2,6 +2,10 @@
 
 WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 
+# install
+
+    npm install react-spark-scroll
+
 # [demo](http://gilbox.github.io/react-spark-scroll/examples/demo/demo.html)
 
 Documentation still needs to be updated, in the meantime checkout the
@@ -20,6 +24,8 @@ It's so declarative you might not even need documentation ;-)
 - Custom formulas, actionProps
 - sparkSetup
 - `SparkProxy` (in angular called `sparkTrigger`)
+- publish to npm
+- Demo
 - Invalidation
     * Manual invalidation mechanism
     * Invalidation interval
@@ -30,9 +36,7 @@ It's so declarative you might not even need documentation ;-)
 - Test on various browsers
 - Re-parsing of data when changed
 - README
-- Demo
 - Support for GSAP
-- publish to npm
 
 ### Probably Won't do:
 
