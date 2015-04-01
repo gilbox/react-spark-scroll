@@ -26,7 +26,7 @@ Ie., `<SparkScroll.div />`, `<SparkScroll.span />`,  `<SparkScroll.h1 />`, etc..
 
 The one place where angular might have an advantage is
 through it's ability to fascilitate more expressive 
-syntax. For example, to toggle a class in angular:
+syntax. For example, to [toggle a class in angular](https://github.com/gilbox/spark-scroll/blob/master/demo/index.html#L70):
 
     <!-- angular: -->
     <section 
@@ -37,7 +37,7 @@ syntax. For example, to toggle a class in angular:
           bottomBottom: {  'downAddClass,upRemoveClass': 'pin-unpin' }
       }">
 
-...vs in react:
+...vs [in react](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js#L131):
 
     <SparkScroll.section
       className={cx("pin",{
