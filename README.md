@@ -10,7 +10,7 @@ angular's attribute-type directive (`restrict: 'A'`) would be a major drawback. 
 [higher-order components](https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775) 
 to generate variations of the same component turned out to be a remarkably
 [elegant](https://github.com/gilbox/react-spark-scroll/blob/master/src/index.js#L70)
-[solution](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js). 
+[solution](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js#L25). 
 Ie., `<SparkScroll.div />`, `<SparkScroll.span />`,  `<SparkScroll.h1 />`, etc...
 
 # install
