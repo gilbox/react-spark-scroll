@@ -15,7 +15,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
   const eventEmitter = new EventEmitter();
   eventEmitter.setMaxListeners(0);
 
-  const spark = function(element, proxyElement, timeline, options) {
+  const spark = function(element, proxyElementFn, timeline, options) {
 
     const callback = options.callback;
     var prevRatio = 0;
@@ -124,14 +124,14 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
       }
 
       changed = false;
-      rect = proxyElement.getBoundingClientRect();
+      rect = proxyElementFn().getBoundingClientRect();
       containerRect = container.getBoundingClientRect();
 
       for (scrY in sparkData) {
         keyFrame = sparkData[scrY];
         if (!keyFrame.formula) continue;
 
-        newScrY = keyFrame.formula.fn(proxyElement, container, rect, containerRect, keyFrame.formula.offset);
+        newScrY = keyFrame.formula.fn(proxyElementFn(), container, rect, containerRect, keyFrame.formula.offset);
         if (newScrY !== ~~scrY) {
           changed = true;
           if (keyFrame.anims && allowAnimation) {
@@ -180,7 +180,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
       let animCount = 0;
       sparkData = {};
       actionFrames = [];
-      rect = proxyElement.getBoundingClientRect();
+      rect = proxyElementFn().getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
       for (scrY in data) {
         let keyFrame = data[scrY] || {};
@@ -195,7 +195,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
             offset: ~~parts[2]
           };
 
-          scrY = formula.fn(proxyElement, container, rect, containerRect, formula.offset);
+          scrY = formula.fn(proxyElementFn(), container, rect, containerRect, formula.offset);
           if (sparkData[scrY]) {
             if (sparkSetup.debug) {
               console.log("warning: spark-scroll failed to calculate formulas", data);
@@ -302,9 +302,10 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
     window.addEventListener('resize', onInvalidate, false);
     eventEmitter.on('invalidate', onInvalidate);
 
-    parseData(timeline);
+    // delay parse a frame to allow proxy to render
+    animationFrame.request(parseData.bind(null,timeline));
 
-  }
+  };
 
   spark.invalidate = () => eventEmitter.emit('invalidate');
 

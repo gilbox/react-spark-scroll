@@ -18,8 +18,9 @@ function factory(options) {
     } = spark;
 
   const sparkScrollFactory = defaultComponent => React.createClass({
+    displayName: 'SparkScroll' + (_.isString(defaultComponent) ? defaultComponent : defaultComponent.displayName),
 
-    render: function () {
+    render () {
       var Component = this.props.component || defaultComponent;
       return (
         <Component {...this.props}>{this.props.children}</Component>
@@ -27,29 +28,27 @@ function factory(options) {
     },
 
     componentDidMount() {
-      if (this.props.proxy && ! proxyElements[this.props.proxy]) {
-        console.warn(`Spark Scroll: Proxy element with id ${this.props.proxy} not found.`);
-      }
-
       var element = React.findDOMNode(this);
-      
-      spark(
-        element,
-        proxyElements[this.props.proxy] || element,
-        this.props.timeline,
-        this.props);
+
+      if (this.props.proxy) {
+        spark(
+          element,
+          () => proxyElements[this.props.proxy] || element,
+          this.props.timeline,
+          this.props);
+      } else {
+        spark(element, () => element, this.props.timeline, this.props);
+      }
     }
   });
 
   const SparkScroll = sparkScrollFactory('div');
   SparkScroll.div = SparkScroll;
 
-  ['span','h1','h2','h3','h4','h5','li','ul','ol','header','section']
-    .forEach( tag => SparkScroll[tag] = sparkScrollFactory(tag));
-
   const sparkProxyFactory = defaultComponent => React.createClass({
+    displayName: 'SparkProxy.' + (_.isString(defaultComponent) ? defaultComponent : defaultComponent.displayName),
 
-    render: function () {
+    render () {
       var Component = this.props.component || defaultComponent;
       return (
         <Component {...this.props}>{this.props.children}</Component>
@@ -66,6 +65,13 @@ function factory(options) {
   });
 
   const SparkProxy = sparkProxyFactory('div');
+  SparkProxy.div = SparkProxy;
+
+  ['span','h1','h2','h3','h4','h5','li','ul','ol','header','section']
+    .forEach( tag => {
+      SparkScroll[tag] = sparkScrollFactory(tag);
+      SparkProxy[tag] = sparkProxyFactory(tag)
+    });
 
   return {
     sparkScrollFactory,
