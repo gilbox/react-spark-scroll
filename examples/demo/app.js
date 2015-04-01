@@ -3,10 +3,6 @@ var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
 var {sparkScrollFactory, SparkScroll, SparkProxy} = require('./app-spark');
 var cx = require('classnames');
 
-//var SparkScrollH1 = sparkScrollFactory('h1');
-//var SparkScrollH2 = sparkScrollFactory('h2');
-//var SparkScrollSpan = sparkScrollFactory('span');
-
 var Hero = React.createClass({
   mixins: [PureRenderMixin],
 
