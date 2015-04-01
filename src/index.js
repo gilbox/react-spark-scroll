@@ -1,6 +1,12 @@
 const React = require('react');
 const sparkFactory = require('./spark');
 
+const Foo = React.createClass({
+  render() {
+    return <div {...this.props}>{this.props.children}</div>
+  }
+});
+
 function factory(options) {
 
   const proxyElements = {};
@@ -11,11 +17,12 @@ function factory(options) {
     disableInvalidationInterval
     } = spark;
 
-  const SparkScroll = React.createClass({
+  const sparkScrollFactory = defaultComponent => React.createClass({
 
     render: function () {
+      var Component = this.props.component || defaultComponent;
       return (
-        <div {...this.props}>{this.props.children}</div>
+        <Component {...this.props}>{this.props.children}</Component>
       );
     },
 
@@ -34,11 +41,14 @@ function factory(options) {
     }
   });
 
-  const SparkProxy = React.createClass({
+  const SparkScroll = sparkScrollFactory('div');
+
+  const sparkProxyFactory = defaultComponent => React.createClass({
 
     render: function () {
+      var Component = this.props.component || defaultComponent;
       return (
-        <div {...this.props}>{this.props.children}</div>
+        <Component {...this.props}>{this.props.children}</Component>
       );
     },
 
@@ -51,7 +61,11 @@ function factory(options) {
     }
   });
 
+  const SparkProxy = sparkProxyFactory('div');
+
   return {
+    sparkScrollFactory,
+    sparkProxyFactory,
     SparkScroll,
     SparkProxy,
     invalidate,
