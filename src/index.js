@@ -42,6 +42,10 @@ function factory(options) {
   });
 
   const SparkScroll = sparkScrollFactory('div');
+  SparkScroll.div = SparkScroll;
+
+  ['span','h1','h2','h3','h4','h5','li','ul','ol','header','section']
+    .forEach( tag => SparkScroll[tag] = sparkScrollFactory(tag));
 
   const sparkProxyFactory = defaultComponent => React.createClass({
 
