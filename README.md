@@ -1,6 +1,6 @@
 # react-spark-scroll
 
-WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
+React port of [spark-scroll](https://github.com/gilbox/spark-scroll/). 
 
 # install
 
