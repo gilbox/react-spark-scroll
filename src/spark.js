@@ -273,9 +273,6 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
         update();
       }
 
-      console.log("-->sparkData: ", sparkData);
-      console.log("-->data: ", data);
-
       return actionsUpdate();
     };
 
