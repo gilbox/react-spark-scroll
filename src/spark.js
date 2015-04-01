@@ -12,7 +12,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
   const sparkActionProps = actionProps ? assign({}, _sparkActionProps, actionProps) : _sparkActionProps;
   const sparkSetup = setup ? assign({}, _sparkSetup, setup) : _sparkSetup;
 
-  const eventEmitter = new EventEmitter({maxListener:0});
+  const eventEmitter = new EventEmitter();
   eventEmitter.setMaxListeners(0);
 
   const spark = function(element, proxyElement, timeline, options) {
