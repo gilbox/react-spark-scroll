@@ -4,6 +4,11 @@ WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 
 # [demo](http://gilbox.github.io/react-spark-scroll/examples/demo/demo.html)
 
+Documentation still needs to be updated, in the meantime checkout the
+[demo](http://gilbox.github.io/react-spark-scroll/examples/demo/demo.html)
+and the [source code](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js).
+It's so declarative you might not even need documentation ;-)
+
 # status
 
 ### Completed:
