@@ -60,6 +60,42 @@ actually happening in the react version. All the tricks employed by
 angular to achieve the expressiveness is not worth the confusion it 
 often creates for developers, IMO.
 
+# setup
+
+    // the require statement returns a factory function, which we can call
+    // with an options object. `invalidateAutomatically:true` is a very
+    // common option.
+    var {SparkScroll, SparkProxy, sparkScrollFactory} =
+      require('react-spark-scroll/spark-scroll-rekapi')({
+        invalidateAutomatically: true
+      });
+
+    // (optional)
+    // We can wrap any component using the factory methods
+    // Assume that `MyClass` is a React class we created
+    SparkScroll['MyClass'] = sparkScrollFactory(MyClass);
+
+    var App = React.createClass({
+      render() {
+        return (
+
+          <SparkScroll.h1
+            timeline={{
+              topBottom: {opacity: 0},
+              centerCenter: {opacity: 1}
+            }}>fade</SparkScroll.h1>
+
+          <SparkScroll.MyClass
+            myClassProperty="some value that MyClass requires"
+            timeline={{
+              'topTop+100': {width: '0%', backgroundColor: '#5c832f'},
+              'topTop+250': {width: ['100%', 'easeOutQuart'], backgroundColor: '#382513'}
+            }} />
+        )
+      }
+    });
+
+
 # status
 
 ### Completed:
