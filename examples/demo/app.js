@@ -179,7 +179,7 @@ var App = React.createClass({
                 'topTop+550': {backgroundColor: '#5c832f'}
               }}>
 
-              {/* when we hit the appropriate scroll position, use elm.text(..) to change the
+              {/* when we hit the appropriate scroll position, use onUp/onDown to change the
                     text to 'slide' or 'color' depending on the scroll direction */}
               <SparkScroll.h3
                 className="slide-txt"
