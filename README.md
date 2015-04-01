@@ -4,7 +4,7 @@ React port of [spark-scroll](https://github.com/gilbox/spark-scroll/).
 
 ## why?
 
-I was qurious to find out how difficult it would be to create complex animations 
+I was curious to find out how difficult it would be to create complex animations 
 with React. At first, I thought that React's lack of a direct equivalent to 
 angular's attribute-type directive (`restrict: 'A'`) would be a major drawback. However, using
 [higher-order components](https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775) 
