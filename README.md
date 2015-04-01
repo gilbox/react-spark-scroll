@@ -2,7 +2,7 @@
 
 WIP react port of [spark-scroll](https://github.com/gilbox/spark-scroll/)
 
-# [demo](http://gilbox.github.io/react-spark-scroll/examples/demo/)
+# [demo](http://gilbox.github.io/react-spark-scroll/examples/demo/demo.html)
 
 # status
 
