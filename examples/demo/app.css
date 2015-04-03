@@ -16,6 +16,11 @@ html, body {
   font-weight: 700;
 }
 
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 a, a:visited, a:active {
   color: #D8CAA8;
 }
