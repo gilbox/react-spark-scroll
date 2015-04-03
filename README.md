@@ -65,6 +65,10 @@ often creates for developers, IMO.
     // the require statement returns a factory function, which we can call
     // with an options object. `invalidateAutomatically:true` is a very
     // common option.
+    //
+    // Note: You should normally call this factory only once, so in an application
+    // with multiple JS files that need SparkScroll, it should
+    // probably live in it's own file (see the examples/demo/app-spark.js)
     var {SparkScroll, SparkProxy, sparkScrollFactory} =
       require('react-spark-scroll/spark-scroll-rekapi')({
         invalidateAutomatically: true
