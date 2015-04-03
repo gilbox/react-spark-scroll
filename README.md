@@ -100,6 +100,23 @@ often creates for developers, IMO.
     });
 
 
+# usage 
+
+Documentation is lacking, so for now you can learn about creating animations 
+and using formulas in the [Usage section of angular `spark-scroll`](https://github.com/gilbox/spark-scroll#usage).
+
+`react-spark-scroll` also supports the callback feature, but the callback semantics
+are different than they are in `spark-scroll`. Still, reading the [callback section of
+`spark-scroll`](https://github.com/gilbox/spark-scroll#spark-scroll-callback-callback-on-scroll-event)
+might be useful. Checkout the included demo as well.
+
+`react-spark-scroll` uses [the same formulas as `spark-scroll`](https://github.com/gilbox/spark-scroll#built-in-formulas),
+however to create custom formulas you need to pass in as options to the factory function. 
+Documentation for this is incomplete.
+
+Also supported are [custom animation engines](https://github.com/gilbox/spark-scroll#custom-animation-engine), and
+again additional information is forthcoming.
+
 # status
 
 ### Completed:
