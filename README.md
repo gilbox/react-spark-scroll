@@ -110,12 +110,90 @@ are different than they are in `spark-scroll`. Still, reading the [callback sect
 `spark-scroll`](https://github.com/gilbox/spark-scroll#spark-scroll-callback-callback-on-scroll-event)
 might be useful. Checkout the included demo as well.
 
-`react-spark-scroll` uses [the same formulas as `spark-scroll`](https://github.com/gilbox/spark-scroll#built-in-formulas),
-however to create custom formulas you need to pass in as options to the factory function. 
-Documentation for this is incomplete.
-
 Also supported are [custom animation engines](https://github.com/gilbox/spark-scroll#custom-animation-engine), and
 again additional information is forthcoming.
+
+## formulas
+
+Formulas are dynamically calculated keyframes. They usually require that you implement
+some form of invalidation, the simplest of which is setting the `invalidateAutomatically`
+option to `true`.
+
+Here are all of the formulas that ship with react-spark-scroll:
+
+    const _sparkFormulas = {
+
+      // top of the element hits the top of the viewport
+      topTop(element, container, rect, containerRect, offset) {
+        return ~~(rect.top - containerRect.top + offset);
+      },
+
+      // top of the element hits the center of the viewport
+      topCenter(element, container, rect, containerRect, offset) {
+        return ~~(rect.top - containerRect.top - container.clientHeight / 2 + offset);
+      },
+
+      // top of the element hits the bottom of the viewport
+      topBottom(element, container, rect, containerRect, offset) {
+        return ~~(rect.top - containerRect.top - container.clientHeight + offset);
+      },
+
+      // center of the element hits the top of the viewport
+      centerTop(element, container, rect, containerRect, offset) {
+        return ~~(rect.top + rect.height / 2 - containerRect.top + offset);
+      },
+
+      // center of the element hits the center of the viewport
+      centerCenter(element, container, rect, containerRect, offset) {
+        return ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight / 2 + offset);
+      },
+
+      // center of the element hits the bottom of the viewport
+      centerBottom(element, container, rect, containerRect, offset) {
+        return ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight + offset);
+      },
+
+      // bottom of the element hits the top of the viewport
+      bottomTop(element, container, rect, containerRect, offset) {
+        return ~~(rect.bottom - containerRect.top + offset);
+      },
+
+      // bottom of the element hits the bottom of the viewport
+      bottomBottom(element, container, rect, containerRect, offset) {
+        return ~~(rect.bottom - containerRect.top - container.clientHeight + offset);
+      },
+
+      // bottom of the element hits the center of the viewport
+      bottomCenter(element, container, rect, containerRect, offset) {
+        return ~~(rect.bottom - containerRect.top - container.clientHeight / 2 + offset);
+      }
+    };
+
+## custom formulas
+
+Formulas allow you to add keyframes to the time-line that are dynamically calculated based
+on any of the following objects:
+
+- element: DOM element
+- container: Body DOM element
+- rect: element's bounding rect
+- containerRect: container's bounding rect
+- offset: offset passed into the formula
+
+Custom formulas can be added via the options object of the spark-scroll factory method,
+utilizing the `formulas` property. For example:
+
+    var sparkScroll = require('react-spark-scroll/spark-scroll-rekapi')({
+      invalidateAutomatically: true
+      formulas: {
+
+        //similar to the built-in topBottom formula, except that offset
+        // is calculated as a percentage of the viewport height
+
+        topBottomPct: (element, container, rect, containerRect, offset) =>
+          ~~(rect.bottom - containerRect.top + offset*containerRect.clientHeight/100)
+      }
+    });
 
 # status
 
