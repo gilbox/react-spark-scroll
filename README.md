@@ -113,6 +113,47 @@ might be useful. Checkout the included demo as well.
 Also supported are [custom animation engines](https://github.com/gilbox/spark-scroll#custom-animation-engine), and
 again additional information is forthcoming.
 
+## actions
+
+Actions are triggered only when hitting a keyframe. An action can cause something to
+happen when scrolling up past the keyframe, down past the keyframe, or both.
+There are currently only two built-in actions: `onUp` and `onDown` which simply
+trigger a callback function.
+
+## custom actions
+
+Custom actions may be added via the options object of the react-spark-scroll factory
+function, utilizing the `actions` property. For example, we could create a `log` action
+that simply logs a message to the console whenever it's activated:
+
+    var sparkScroll = require('react-spark-scroll/spark-scroll-rekapi')({
+      actions: {
+        log: {
+          down(o) {
+            console.log(`spark: hit keyframe [ ${o.formula} ] scrolling down. value: ${o.val}`);
+          }
+          up(o) {
+            console.log(`spark: hit keyframe [ ${o.formula} ] scrolling up. value: ${o.val}`);
+          }
+        }
+      }
+    }
+
+And putting the new action to use might look like this:
+
+    <SparkScroll.h1
+      timeline={{
+        topBottom: {opacity: 0, log: 'foo'},
+        centerCenter: {opacity: 1, log: 'bar'}
+      }}>fade</SparkScroll.h1>
+
+When scrolling up and down we'd see in the console:
+
+    spark: hit keyframe [ centerCenter ] scrolling down. value: bar
+    spark: hit keyframe [ topBottom ] scrolling down. value: foo
+    spark: hit keyframe [ topBottom ] scrolling down. value: foo
+    spark: hit keyframe [ centerCenter ] scrolling down. value: bar
+
 ## formulas
 
 Formulas are dynamically calculated keyframes. They usually require that you implement
@@ -171,7 +212,7 @@ Here are all of the formulas that ship with react-spark-scroll:
 
 ## custom formulas
 
-Formulas allow you to add keyframes to the time-line that are dynamically calculated based
+Formulas allow you to add keyframes to the timeline that are dynamically calculated based
 on any of the following objects:
 
 - element: DOM element
@@ -180,7 +221,7 @@ on any of the following objects:
 - containerRect: container's bounding rect
 - offset: offset passed into the formula
 
-Custom formulas can be added via the options object of the spark-scroll factory method,
+Custom formulas can be added via the options object of the react-spark-scroll factory function,
 utilizing the `formulas` property. For example:
 
     var sparkScroll = require('react-spark-scroll/spark-scroll-rekapi')({
