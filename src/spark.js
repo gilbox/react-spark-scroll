@@ -340,32 +340,50 @@ const _sparkSetup = {
 };
 
 const _sparkFormulas = {
+
+  // top of the element hits the top of the viewport
   topTop(element, container, rect, containerRect, offset) {
-    return ~~(rect.top - containerRect.top + offset)
+    return ~~(rect.top - containerRect.top + offset);
   },
+
+  // top of the element hits the center of the viewport
   topCenter(element, container, rect, containerRect, offset) {
-    return ~~(rect.top - containerRect.top - container.clientHeight/2 + offset)
+    return ~~(rect.top - containerRect.top - container.clientHeight / 2 + offset);
   },
+
+  // top of the element hits the bottom of the viewport
   topBottom(element, container, rect, containerRect, offset) {
-    return ~~(rect.top - containerRect.top - container.clientHeight + offset)
+    return ~~(rect.top - containerRect.top - container.clientHeight + offset);
   },
+
+  // center of the element hits the top of the viewport
   centerTop(element, container, rect, containerRect, offset) {
-    return ~~(rect.top + rect.height/2 - containerRect.top + offset)
+    return ~~(rect.top + rect.height / 2 - containerRect.top + offset);
   },
+
+  // center of the element hits the center of the viewport
   centerCenter(element, container, rect, containerRect, offset) {
-    return ~~(rect.top + rect.height/2 - containerRect.top - container.clientHeight/2 + offset)
+    return ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight / 2 + offset);
   },
+
+  // center of the element hits the bottom of the viewport
   centerBottom(element, container, rect, containerRect, offset) {
-    return ~~(rect.top + rect.height/2 - containerRect.top - container.clientHeight + offset)
+    return ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight + offset);
   },
+
+  // bottom of the element hits the top of the viewport
   bottomTop(element, container, rect, containerRect, offset) {
-    return ~~(rect.bottom - containerRect.top + offset)
+    return ~~(rect.bottom - containerRect.top + offset);
   },
+
+  // bottom of the element hits the bottom of the viewport
   bottomBottom(element, container, rect, containerRect, offset) {
-    return ~~(rect.bottom - containerRect.top - container.clientHeight + offset)
+    return ~~(rect.bottom - containerRect.top - container.clientHeight + offset);
   },
+
+  // bottom of the element hits the center of the viewport
   bottomCenter(element, container, rect, containerRect, offset) {
-    return ~~(rect.bottom - containerRect.top - container.clientHeight/2 + offset)
+    return ~~(rect.bottom - containerRect.top - container.clientHeight / 2 + offset);
   }
 };
 
