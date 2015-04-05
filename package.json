@@ -1,6 +1,6 @@
 {
   "name": "react-spark-scroll",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Scroll-based animation and actions for React",
   "main": "src",
   "repository": {
@@ -11,10 +11,15 @@
   "bugs": "https://github.com/gilbox/react-spark-scroll/issues",
   "scripts": {
     "build-global": "rm -rf build/global && NODE_ENV=production webpack src/index.js build/global/spark-scroll.js && NODE_ENV=production COMPRESS=1 webpack src/index.js build/global/spark-scroll.min.js && echo \"gzipped, the global build is `gzip -c build/global/spark-scroll.min.js | wc -c` bytes\"",
-    "build-npm": "rm -rf build/npm && babel -d build/npm/lib ./src && cp README.md build/npm && find -X build/npm/lib -type d -name __tests__ | xargs rm -rf && node -p 'p=require(\"./package\");p.main=\"lib\";p.scripts=p.devDependencies=undefined;JSON.stringify(p,null,2)' > build/npm/package.json",
+    "build-npm": "rm -rf build/npm && babel -d build/npm/lib ./src && cp README.md build/npm && find -X build/npm/lib -type d -name __tests__ | xargs rm -rf && node -p 'p=require(\"./package-npm\");JSON.stringify(p,null,2)' > build/npm/package.json",
+    "build-npm-rekapi": "rm -rf build/npm-rekapi && babel -d build/npm-rekapi/lib ./src && rm build/npm-rekapi/lib/index.js build/npm-rekapi/lib/gsap-animator.js build/npm-rekapi/lib/spark.js build/npm-rekapi/lib/spark-scroll-gsap.js && mv build/npm-rekapi/lib/spark-scroll-rekapi.js build/npm-rekapi/lib/index.js  && cp README.md build/npm-rekapi && find -X build/npm-rekapi/lib -type d -name __tests__ | xargs rm -rf && node -p 'p=require(\"./package-npm-rekapi\");JSON.stringify(p,null,2)' > build/npm-rekapi/package.json",
+    "build-npm-gsap": "rm -rf build/npm-gsap && babel -d build/npm-gsap/lib ./src && rm build/npm-gsap/lib/index.js build/npm-gsap/lib/spark.js build/npm-gsap/lib/spark-scroll-rekapi.js && mv build/npm-gsap/lib/spark-scroll-gsap.js build/npm-gsap/lib/index.js && cp README.md build/npm-gsap && find -X build/npm-gsap/lib -type d -name __tests__ | xargs rm -rf && node -p 'p=require(\"./package-npm-gsap\");JSON.stringify(p,null,2)' > build/npm-gsap/package.json",
+    "build-npm-all": "npm run build-npm && npm run build-npm-rekapi && npm run build-npm-gsap",
     "examples": "rm -rf examples/js && webpack-dev-server --config examples/webpack.config.js --content-base examples",
     "examples-build": "rm -rf examples/js && webpack --config examples/webpack.build.config.js",
-    "test": "jsxhint . && karma start"
+    "test": "jsxhint . && karma start",
+    "publish": "npm publish ./build/npm  && npm publish ./build/npm-gsap && npm publish ./build/npm-rekapi",
+    "prepush": "npm run examples-build"
   },
   "authors": [
     "Gil Birman"
@@ -40,7 +45,9 @@
     "rf-changelog": "^0.4.0",
     "rx": "2.3.18",
     "webpack": "^1.4.13",
-    "webpack-dev-server": "^1.6.6"
+    "webpack-dev-server": "^1.6.6",
+    "gsap": "^1.16.1",
+    "rekapi": "^1.4.4"
   },
   "peerDependencies": {
     "react": "0.13.x"
@@ -48,10 +55,8 @@
   "dependencies": {
     "animation-frame": "^0.2.4",
     "events": "^1.0.2",
-    "gsap": "^1.16.1",
     "lodash": "^3.6.0",
-    "object-assign": "^2.0.0",
-    "rekapi": "^1.4.4"
+    "object-assign": "^2.0.0"
   },
   "tags": [
     "react",

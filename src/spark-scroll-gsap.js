@@ -7,7 +7,7 @@
 require('gsap');
 
 const assign = require('object-assign');
-const _factory = require('./');
+const _factory = require('react-spark-scroll');
 const GSAPAnimator = require('./gsap-animator');
 
 function factory(options) {
