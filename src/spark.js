@@ -6,7 +6,6 @@ var EventEmitter = require('events').EventEmitter;
 function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomatically}) {
 
   const allowAnimation = !! animator;
-  const sparkAnimator = allowAnimation && animator.instance();
 
   const sparkFormulas = formulas ? assign({}, _sparkFormulas, formulas) : _sparkFormulas;
   const sparkActionProps = actionProps ? assign({}, _sparkActionProps, actionProps) : _sparkActionProps;
@@ -22,6 +21,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
     var minScrollY = 0;
     var maxScrollY = 0;
 
+    const sparkAnimator = allowAnimation && animator.instance();
     const actor = sparkAnimator && sparkAnimator.addActor({
       context: element
     });
