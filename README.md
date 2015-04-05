@@ -8,7 +8,7 @@ React port of [spark-scroll](https://github.com/gilbox/spark-scroll/).
 
 # [demo](http://gilbox.github.io/react-spark-scroll/examples/demo/demo.html)
 
-Documentation still needs to be updated, in the meantime checkout the
+You can read all of the documentation below, but first checkout the
 [demo](http://gilbox.github.io/react-spark-scroll/examples/demo/demo.html)
 and the [source code](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js).
 It's so declarative you might not even need documentation ;-)
@@ -175,7 +175,7 @@ would look something like this:
 
     <SparkScroll.div
       callback={ ratio => console.log('callback @ ' + ratio) }
-      timeline="{ topBottom:0, topTop:0 }" />
+      timeline={{ topBottom:0, topTop:0 }} />
 
 When `react-spark-scroll` calls the callback function, the `ratio` is calculated based on the current scroll position,
 and the `topBottom` and `topTop` formulas.
@@ -186,15 +186,15 @@ assign `0`. However, if we wanted to use a callback while at the same time takin
 
     <SparkScroll.h1
       callback="myOtherFunctionOnScope"
-      timeline="{
+      timeline={{
         topTop:{ opacity: 0 },
         topCenter:{ opacity: 0.3 },
         topBottom:{ opacity: 1, onUp: _ => console.log('scrolling up') }
-      }">
+      }}>
       This Title is Spark
     </h1>
 
-Note that in the preceding example, when `SparkScroll` calls `onUp`, the `ratio` argument
+Note that in this example, when `SparkScroll` calls `onUp`, the `ratio` argument
 is calculated using the `topTop` and `topBottom` formulas because they are at the extremes of the
 keyframe range for this element.
 
@@ -324,7 +324,7 @@ utilizing the `formulas` property. For example:
 ## Custom Animation Engine
 
 
-The factory method returned by `require('react-spark-scroll')` expects an options object with
+The factory method returned by `require('react-spark-scroll')` expects an options object
 where only one option is *required*: `animator`. `animator` should be an object with the property
 `instance` of type `function`. Invoking `animator.instance()` returns an instance of a Spark Scroll-compatible
 animator. Included with `react-spark-scroll` are two different animators: Rekapi and GSAP. Here
@@ -365,7 +365,7 @@ the following [Rekapi](http://rekapi.com)-like interface:
 
 See below and the [Rekapi docs](http://rekapi.com/dist/doc/) for implementation details.
 
-### actor.keyframe(scrollY, animations, ease)
+### `actor.keyframe(scrollY, animations, ease)`
 
 Creates a new keyframe. A keyframe should support the following properties...
 
@@ -384,7 +384,7 @@ Creates a new keyframe. A keyframe should support the following properties...
 
 ### `actor.finishedAddingKeyframes`
 
-actors can optionally expose this function which will be called when parsing has completed
+actors can *optionally* expose this function which will be called when parsing has completed
 
 
 ### `actor.moveKeyframe(from, to)`
@@ -396,22 +396,22 @@ Moves a keyframe to a different time (scroll) value.
   - `to` Destination keyframe
 
 
-### `animator.update(scrollY)` Updates the animation to a specific keyframe.
+### `animator.update(scrollY)`
+
+Updates the animation to a specific keyframe.
 
  - `scrollY` The vertical scroll position (the library will treat this as time)
 
-## Custom Animation Engine: TweenMax (GSAP)
+## TweenMax/TweenLite (GSAP)
 
 As mentioned, the easiest way to use GSAP is via:
 
     require('react-spark-scroll/spark-scroll-gsap');
 
 However, this will include TweenMax. If you wish to include a subset of TweenMax,
-then TweenLite.js, CSSPlugin, and TimelineLite are the minimum required subset
+then `TweenLite.js`, `CSSPlugin.js`, and `TimelineLite.js` are the minimum subset of files
 required by `GSAPAnimator`. Load those files in however you wish, and then copy
-`src/spark-scroll-gsap.js` and remove the `require('gsap')` line.
-Then, instead of `require('react-spark-scroll/spark-scroll-gsap');`, require your own
-customized version of the file.
+`src/spark-scroll-gsap.js` into your project and remove the `require('gsap')` line.
 
 The syntax when using TweenMax will differ slightly
 because TweenMax has some differences in the animation properties it supports. For example,
@@ -423,8 +423,8 @@ a rather different set of [easing](http://greensock.com/roughease) equations tha
 
 > Note: I suspect that Rekapi is slightly faster than GSAP for scroll-based animation
 because it was built specifically for keyframe
-animations. However, if you are interested in animating SVG then use the GSAP animator
-because GSAP supports SVG animations but Rekapi does not.
+animations. However, **if you are interested in animating SVG then use the GSAP animator
+because GSAP supports SVG animations but Rekapi does not.**
 
 # status
 
