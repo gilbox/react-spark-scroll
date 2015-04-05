@@ -100,18 +100,103 @@ often creates for developers, IMO.
     });
 
 
-# usage 
+# usage
 
-Documentation is lacking, so for now you can learn about creating animations 
-and using formulas in the [Usage section of angular `spark-scroll`](https://github.com/gilbox/spark-scroll#usage).
 
-`react-spark-scroll` also supports the callback feature, but the callback semantics
-are different than they are in `spark-scroll`. Still, reading the [callback section of
-`spark-scroll`](https://github.com/gilbox/spark-scroll#spark-scroll-callback-callback-on-scroll-event)
-might be useful. Checkout the included demo as well.
+## Basic Callback Example
 
-Also supported are [custom animation engines](https://github.com/gilbox/spark-scroll#custom-animation-engine), and
-again additional information is forthcoming.
+    <SparkScroll.h1
+      timeline={{
+        120:{ onUp: _ => console.log('scrolling up past 120!') },
+        121:{ 'onUp,onDown': e => console.log('going ' + (e==='onUp' ? 'up!':'down!')) }
+      }}>
+      This Title is Sparky
+    </h1>
+
+
+## Formula Example
+
+    <SparkScroll.h1
+      timeline={{
+        topTop:{ onUp: _ => console.log('scrolling up past 120!') },
+        'bottomBottom+50':{ 'onUp,onDown': e => console.log('going ' + (e==='onUp' ? 'up!':'down!')) }
+      }}>
+      This Title is Sparky
+    </h1>
+
+
+## Animated Example (with formulas)
+
+    <SparkScroll.h1
+      timeline={{
+        topTop:{ color: '#f00', marginLeft: '50px' },
+        topBottom:{ color: '#000', marginLeft: '0px' }
+      }}>
+      This Title is Spark Animated
+    </h1>
+
+
+## Animated Less-Basic Example with easing (no formulas)
+
+    <SparkScroll.h1
+      timeline={{
+        ease:'easeOutQuad',
+        120:{opacity:'0'},
+        121:{opacity:'0.8', top:'151px', color:'#fff'},
+        140:{opacity:'1.0', top:'0px', color:'#444'}
+      }}>
+      This Title is Sparky
+    </h1>
+
+
+## Animated Example with Override element-wide easing at a specific keyframe (with formulas)
+
+    <SparkScroll.h1
+      timeline={{
+        ease:'easeOutQuad',
+        topTop:{opacity:'0'},
+        centerCenter:{opacity:'0.8', top:'151px', color:'#fff'},
+        bottomBottom:{opacity:'1.0', top:'0px', color:'#444', ease: 'linear'}
+      }}>
+      This Title is Sparky
+    </h1>
+
+
+## Callback on Scroll Event
+
+The `callback` property expects a function.
+The function will be called for every *frame* of scrolling. `react-spark-scroll` internally debounces scroll events
+so the callback will not necessarily be called on all native scroll events.
+
+Every time the function is called, it is provided one argument, `ratio` which is a decimal value
+between 0 and 1 representing the progress of scroll within the limits of the maximum and minimum
+scroll positions of the `timeline` property. The simplest use of the `callback` property
+would look something like this:
+
+    <SparkScroll.div
+      callback={ ratio => console.log('callback @ ' + ratio) }
+      timeline="{ topBottom:0, topTop:0 }" />
+
+When `react-spark-scroll` calls the callback function, the `ratio` is calculated based on the current scroll position,
+and the `topBottom` and `topTop` formulas.
+
+Note that in the preceding example instead of assigning an object to the keyframes, we simply
+assign `0`. However, if we wanted to use a callback while at the same time taking advantage of *action* and
+*animation* properties we could do something like this:
+
+    <SparkScroll.h1
+      callback="myOtherFunctionOnScope"
+      timeline="{
+        topTop:{ opacity: 0 },
+        topCenter:{ opacity: 0.3 },
+        topBottom:{ opacity: 1, onUp: _ => console.log('scrolling up') }
+      }">
+      This Title is Spark
+    </h1>
+
+Note that in the preceding example, when `SparkScroll` calls `onUp`, the `ratio` argument
+is calculated using the `topTop` and `topBottom` formulas because they are at the extremes of the
+keyframe range for this element.
 
 ## actions
 
@@ -355,6 +440,7 @@ because GSAP supports SVG animations but Rekapi does not.
 - publish to npm
 - Demo
 - Support for GSAP
+- README
 - Invalidation
     * Manual invalidation mechanism
     * Invalidation interval
@@ -364,7 +450,6 @@ because GSAP supports SVG animations but Rekapi does not.
 
 - Test on various browsers
 - Re-parsing of data when changed
-- README
 
 ### Probably Won't do:
 
