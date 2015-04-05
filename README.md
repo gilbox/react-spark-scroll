@@ -236,6 +236,111 @@ utilizing the `formulas` property. For example:
       }
     });
 
+## Custom Animation Engine
+
+
+The factory method returned by `require('react-spark-scroll')` expects an options object with
+where only one option is *required*: `animator`. `animator` should be an object with the property
+`instance` of type `function`. Invoking `animator.instance()` returns an instance of a Spark Scroll-compatible
+animator. Included with `react-spark-scroll` are two different animators: Rekapi and GSAP. Here
+is an example of how the GSAP animator can be used to bootstrap the factory method:
+
+    const _factory = require('react-spark-scroll');
+
+    function factory(options) {
+      return _factory(assign({
+        animator: {
+          instance: () => new GSAPAnimator()
+        }
+      }, options));
+    }
+
+Note that we've created another factory method to wrap the `react-spark-scroll` factory method
+so that additional options may be passed in.
+
+As mentioned, `react-spark-scroll` already ships with options for two different animation
+engines, which you can include via:
+
+    require('react-spark-scroll/spark-scroll-rekapi');
+
+    // OR:
+
+    require('react-spark-scroll/spark-scroll-gsap');
+
+
+If you wish to use a custom animation engine, your `Animator` class must support
+the following [Rekapi](http://rekapi.com)-like interface:
+
+    const animator = new Animator(/* optional args */);
+    const actor = animator.addActor({ context: <dom element> })  // works just like rekapi.addActor(...)
+    actor.keyframe(...)
+    actor.moveKeyframe(...)
+    actor.removeAllKeyframes()
+    animator.update(...)       // works just like rekapi.update(...)
+
+See below and the [Rekapi docs](http://rekapi.com/dist/doc/) for implementation details.
+
+### actor.keyframe(scrollY, animations, ease)
+
+Creates a new keyframe. A keyframe should support the following properties...
+
+  - `scrollY` The vertical scroll position (the library will treat this as time)
+
+  - `animations` Simple object with css properties and values, for example:
+
+    - `{marginLeft: "0px", opacity: 1}`
+    - `{borderRight: "5px", opacity: 0}`
+
+  - `ease` Simple object with property for each property in `animations` object (see above)
+
+    - `{marginLeft: "easeOutSine", opacity: "bouncePast"}`
+    - `{borderRight: "linear", opacity: "easeinSine"}`
+
+
+### `actor.finishedAddingKeyframes`
+
+actors can optionally expose this function which will be called when parsing has completed
+
+
+### `actor.moveKeyframe(from, to)`
+
+Moves a keyframe to a different time (scroll) value.
+
+  - `from` Source keyframe
+
+  - `to` Destination keyframe
+
+
+### `animator.update(scrollY)` Updates the animation to a specific keyframe.
+
+ - `scrollY` The vertical scroll position (the library will treat this as time)
+
+## Custom Animation Engine: TweenMax (GSAP)
+
+As mentioned, the easiest way to use GSAP is via:
+
+    require('react-spark-scroll/spark-scroll-gsap');
+
+However, this will include TweenMax. If you wish to include a subset of TweenMax,
+then TweenLite.js, CSSPlugin, and TimelineLite are the minimum required subset
+required by `GSAPAnimator`. Load those files in however you wish, and then copy
+`src/spark-scroll-gsap.js` and remove the `require('gsap')` line.
+Then, instead of `require('react-spark-scroll/spark-scroll-gsap');`, require your own
+customized version of the file.
+
+The syntax when using TweenMax will differ slightly
+because TweenMax has some differences in the animation properties it supports. For example,
+while Rekapi supports the `rotate` property which takes a string value like `360deg`, TweenMax
+instead supports `rotation` which takes a numeric value like `360`. TweenMax also supports
+a rather different set of [easing](http://greensock.com/roughease) equations than [Rekapi](http://rekapi.com/ease.html).
+
+**[spark-scroll TweenMax demo](http://gilbox.github.io/react-spark-scroll/examples/demo-gsap/demo.html)**
+
+> Note: I suspect that Rekapi is slightly faster than GSAP for scroll-based animation
+because it was built specifically for keyframe
+animations. However, if you are interested in animating SVG then use the GSAP animator
+because GSAP supports SVG animations but Rekapi does not.
+
 # status
 
 ### Completed:
@@ -249,6 +354,7 @@ utilizing the `formulas` property. For example:
 - `SparkProxy` (in angular called `sparkTrigger`)
 - publish to npm
 - Demo
+- Support for GSAP
 - Invalidation
     * Manual invalidation mechanism
     * Invalidation interval
@@ -259,7 +365,6 @@ utilizing the `formulas` property. For example:
 - Test on various browsers
 - Re-parsing of data when changed
 - README
-- Support for GSAP
 
 ### Probably Won't do:
 
