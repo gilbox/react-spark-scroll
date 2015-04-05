@@ -68,7 +68,7 @@ var App = React.createClass({
     return {
       actionType: null,
       text: 'slide',
-      unpinHide: false,
+      unpinHide: true,
       slideHide: true,
       pinPin: false,
       pinUnpin: false
@@ -191,7 +191,7 @@ var App = React.createClass({
                 }}>{this.state.text}</SparkScroll.h3>
 
               <SparkScroll.h3
-                className={cx("unpin-txt hide",{hide:this.state.unpinHide})}
+                className={cx("unpin-txt",{hide:this.state.unpinHide})}
                 proxy="pin-cont"
                 timeline={{
                  'topTop+600': {
