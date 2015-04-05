@@ -4,7 +4,19 @@ React port of [spark-scroll](https://github.com/gilbox/spark-scroll/).
 
 # install
 
+    # rekapi will be included as a dependency:
+    npm install react-spark-scroll-rekapi
+
+or
+
+    # gsap and gsap-animator will be included as a dependency:
+    npm install react-spark-scroll-gsap
+
+or
+
+    # in this case you will have to manually setup an animator
     npm install react-spark-scroll
+
 
 # [demo](http://gilbox.github.io/react-spark-scroll/examples/demo/demo.html)
 
@@ -344,13 +356,13 @@ Note that we've created another factory method to wrap the `react-spark-scroll` 
 so that additional options may be passed in.
 
 As mentioned, `react-spark-scroll` already ships with options for two different animation
-engines, which you can include via:
+engines, which you can include by manually installed the dependencies you need or simply:
 
-    require('react-spark-scroll/spark-scroll-rekapi');
+    require('react-spark-scroll-rekapi');
 
     // OR:
 
-    require('react-spark-scroll/spark-scroll-gsap');
+    require('react-spark-scroll-gsap');
 
 
 If you wish to use a custom animation engine, your `Animator` class must support
@@ -404,14 +416,6 @@ Updates the animation to a specific keyframe.
 
 ## TweenMax/TweenLite (GSAP)
 
-As mentioned, the easiest way to use GSAP is via:
-
-    require('react-spark-scroll/spark-scroll-gsap');
-
-However, this will include TweenMax. If you wish to include a subset of TweenMax,
-then `TweenLite.js`, `CSSPlugin.js`, and `TimelineLite.js` are the minimum subset of files
-required by `GSAPAnimator`. Load those files in however you wish, and then copy
-`src/spark-scroll-gsap.js` into your project and remove the `require('gsap')` line.
 
 The syntax when using TweenMax will differ slightly
 because TweenMax has some differences in the animation properties it supports. For example,
@@ -425,6 +429,20 @@ a rather different set of [easing](http://greensock.com/roughease) equations tha
 because it was built specifically for keyframe
 animations. However, **if you are interested in animating SVG then use the GSAP animator
 because GSAP supports SVG animations but Rekapi does not.**
+
+As mentioned, the easiest way to use GSAP is via:
+
+    require('react-spark-scroll-gsap');
+
+However, this will include TweenMax. To customize your build instead of the above, use:
+
+    require('react-spark-scroll');
+
+Now you can include a subset of TweenMax since TweenMax isn't specified as a dependency of `react-spark-scroll`.
+`TweenLite.js`, `CSSPlugin.js`, and `TimelineLite.js` are the minimum subset of files
+required by `GSAPAnimator`. Load those files in however you wish, and then copy
+`node_modules/react-spark-scroll/src/spark-scroll-gsap.js` into your project and remove the `require('gsap')` line.
+
 
 # status
 
