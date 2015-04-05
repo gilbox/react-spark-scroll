@@ -12,7 +12,7 @@
   "scripts": {
     "build-global": "rm -rf build/global && NODE_ENV=production webpack src/index.js build/global/spark-scroll.js && NODE_ENV=production COMPRESS=1 webpack src/index.js build/global/spark-scroll.min.js && echo \"gzipped, the global build is `gzip -c build/global/spark-scroll.min.js | wc -c` bytes\"",
     "build-npm": "rm -rf build/npm && babel -d build/npm/lib ./src && cp README.md build/npm && find -X build/npm/lib -type d -name __tests__ | xargs rm -rf && node -p 'p=require(\"./package\");p.main=\"lib\";p.scripts=p.devDependencies=undefined;JSON.stringify(p,null,2)' > build/npm/package.json",
-    "examples": "webpack-dev-server --config examples/webpack.config.js --content-base examples",
+    "examples": "npm run examples-build && webpack-dev-server --config examples/webpack.config.js --content-base examples",
     "examples-build": "webpack --config examples/webpack.build.config.js",
     "test": "jsxhint . && karma start"
   },
@@ -48,6 +48,7 @@
   "dependencies": {
     "animation-frame": "^0.2.4",
     "events": "^1.0.2",
+    "gsap": "^1.16.1",
     "lodash": "^3.6.0",
     "object-assign": "^2.0.0",
     "rekapi": "^1.4.4"
