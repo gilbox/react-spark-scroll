@@ -248,8 +248,8 @@ When scrolling up and down we'd see in the console:
 
     spark: hit keyframe [ centerCenter ] scrolling down. value: bar
     spark: hit keyframe [ topBottom ] scrolling down. value: foo
-    spark: hit keyframe [ topBottom ] scrolling down. value: foo
-    spark: hit keyframe [ centerCenter ] scrolling down. value: bar
+    spark: hit keyframe [ topBottom ] scrolling up. value: foo
+    spark: hit keyframe [ centerCenter ] scrolling up. value: bar
 
 ## formulas
 
