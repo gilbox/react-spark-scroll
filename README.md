@@ -7,6 +7,8 @@ React port of [spark-scroll](https://github.com/gilbox/spark-scroll/).
     # rekapi will be included as a dependency:
     npm install react-spark-scroll-rekapi
 
+> note: there is an this, see [issue #3](https://github.com/gilbox/react-spark-scroll/issues/3)
+
 or
 
     # gsap and gsap-animator will be included as a dependency:
