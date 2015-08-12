@@ -1,18 +1,28 @@
 # react-spark-scroll
 
-React port of [spark-scroll](https://github.com/gilbox/spark-scroll/). 
+React port of [spark-scroll](https://github.com/gilbox/spark-scroll/).
 
 # install
 
-    # rekapi will be included as a dependency:
-    npm install react-spark-scroll-rekapi
-
-> note: there is an issue with installing `react-spark-scroll-rekapi`, see [issue #3](https://github.com/gilbox/react-spark-scroll/issues/3)
-
-or
-
     # gsap and gsap-animator will be included as a dependency:
     npm install react-spark-scroll-gsap
+
+Start with the GSAP version of the library, but note that you can use Rekapi or your own animator if you have a preference.
+
+Tradeoffs:
+
+* GSAP is much easier to configure. That's because rekapi has some additional configuration necessary (see #3) beyond npm install spark-scroll-rekapi. If you're in the quick-and-dirty experimentation stage, use gsap to get up and running faster.
+
+* Although I haven't done any benchmarks I suspect that rekapi is marginally faster than GSAP. That's because rekapi was built around the concept of timeline-based animation and spark-scroll is all about treating the scroll position as a timeline.
+
+* *GSAP supports animating SVGs*. This is the main deciding factor for me. If I don't need SVG animation I prefer using rekapi although it's not a strong preference.
+
+* Rekapi and GSAP have different licenses.
+
+Alternative installations:
+
+    # rekapi will be included as a dependency:
+    npm install react-spark-scroll-rekapi
 
 or
 
@@ -29,22 +39,22 @@ It's so declarative you might not even need documentation ;-)
 
 ## why?
 
-I was curious to find out how difficult it would be to create complex animations 
-with React. At first, I thought that React's lack of a direct equivalent to 
+I was curious to find out how difficult it would be to create complex animations
+with React. At first, I thought that React's lack of a direct equivalent to
 angular's attribute-type directive (`restrict: 'A'`) would be a major drawback. However, using
-[higher-order components](https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775) 
+[higher-order components](https://gist.github.com/sebmarkbage/ef0bf1f338a7182b6775)
 to generate variations of the same component turned out to be a remarkably
 [elegant](https://github.com/gilbox/react-spark-scroll/blob/master/src/index.js#L70)
-[solution](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js#L25). 
+[solution](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js#L25).
 Ie., `<SparkScroll.div />`, `<SparkScroll.span />`,  `<SparkScroll.h1 />`, etc...
 
 The one place where angular might have an advantage is
-through it's ability to fascilitate more expressive 
+through it's ability to fascilitate more expressive
 syntax. For example, to [toggle a class in angular](https://github.com/gilbox/spark-scroll/blob/master/demo/index.html#L70):
 
     <!-- angular: -->
-    <section 
-      class="pin" 
+    <section
+      class="pin"
       spark-trigger="pin-cont"
       spark-scroll="{
           topTop: { 'downAddClass,upRemoveClass': 'pin-pin' },
@@ -71,8 +81,12 @@ syntax. For example, to [toggle a class in angular](https://github.com/gilbox/sp
 
 However, it is *much much much* easier to reason about what is
 actually happening in the react version. All the tricks employed by
-angular to achieve the expressiveness is not worth the confusion it 
+angular to achieve the expressiveness is not worth the confusion it
 often creates for developers, IMO.
+
+Note that a proxy is used to provide a canonical scroll position. This is
+useful because it's very common for the *top of the element to change* during
+scrolling.
 
 # setup
 
