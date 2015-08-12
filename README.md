@@ -37,6 +37,14 @@ You can read all of the documentation below, but first checkout the
 and the [source code](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js).
 It's so declarative you might not even need documentation ;-)
 
+## build and run the examples
+
+    git clone https://github.com/gilbox/react-spark-scroll.git
+    cd react-spark-scroll/
+    npm i
+    npm run examples
+    open http://localhost:8080/webpack-dev-server/
+
 ## why?
 
 I was curious to find out how difficult it would be to create complex animations
