@@ -11,7 +11,7 @@ Start with the GSAP version of the library, but note that you can use Rekapi or 
 
 Tradeoffs:
 
-* GSAP is much easier to configure. That's because rekapi has some additional configuration necessary (see #3) beyond npm install spark-scroll-rekapi. If you're in the quick-and-dirty experimentation stage, use gsap to get up and running faster.
+* GSAP is much easier to configure. That's because rekapi has some additional configuration necessary (see [#3](https://github.com/gilbox/react-spark-scroll/issues/3)) beyond npm install spark-scroll-rekapi. If you're in the quick-and-dirty experimentation stage, use gsap to get up and running faster.
 
 * Although I haven't done any benchmarks I suspect that rekapi is marginally faster than GSAP. That's because rekapi was built around the concept of timeline-based animation and spark-scroll is all about treating the scroll position as a timeline.
 
@@ -87,14 +87,17 @@ syntax. For example, to [toggle a class in angular](https://github.com/gilbox/sp
         }
       }}>
 
-However, it is *much much much* easier to reason about what is
-actually happening in the react version. All the tricks employed by
-angular to achieve the expressiveness is not worth the confusion it
-often creates for developers, IMO.
-
 Note that a proxy is used to provide a canonical scroll position. This is
 useful because it's very common for the *top of the element to change* during
 scrolling.
+
+~~It is *much much much* easier to reason about what is
+actually happening in the react version. All the tricks employed by
+angular to achieve the expressiveness is not worth the confusion it
+often creates for developers, IMO.~~ I no longer have a strong opinion about
+which way is better. Also, it's actually possible to achieve the same 
+angular syntax in React but I'm not sure if that's a good idea.
+
 
 # setup
 
@@ -154,7 +157,7 @@ scrolling.
 
     <SparkScroll.h1
       timeline={{
-        topTop:{ onUp: _ => console.log('scrolling up past 120!') },
+        topTop:{ onUp: _ => console.log('scrolling up past element top hit top of viewport!') },
         'bottomBottom+50':{ 'onUp,onDown': e => console.log('going ' + (e==='onUp' ? 'up!':'down!')) }
       }}>
       This Title is Sparky
@@ -216,12 +219,12 @@ would look something like this:
 When `react-spark-scroll` calls the callback function, the `ratio` is calculated based on the current scroll position,
 and the `topBottom` and `topTop` formulas.
 
-Note that in the preceding example instead of assigning an object to the keyframes, we simply
+Note that in the preceding example instead of assigning an object to the keyframes (`topBottom` and `topTop`), we simply
 assign `0`. However, if we wanted to use a callback while at the same time taking advantage of *action* and
 *animation* properties we could do something like this:
 
     <SparkScroll.h1
-      callback="myOtherFunctionOnScope"
+      callback={ ratio => console.log('callback @ ' + ratio) }
       timeline={{
         topTop:{ opacity: 0 },
         topCenter:{ opacity: 0.3 },
@@ -230,7 +233,7 @@ assign `0`. However, if we wanted to use a callback while at the same time takin
       This Title is Spark
     </h1>
 
-Note that in this example, when `SparkScroll` calls `onUp`, the `ratio` argument
+Note that in this example, the `callback`'s `ratio` argument
 is calculated using the `topTop` and `topBottom` formulas because they are at the extremes of the
 keyframe range for this element.
 
