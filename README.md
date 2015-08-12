@@ -87,7 +87,8 @@ syntax. For example, to [toggle a class in angular](https://github.com/gilbox/sp
         }
       }}>
 
-Note that a proxy is used to provide a canonical scroll position. This is
+Note that a `proxy` [is used](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo-gsap/app.js#L129) 
+to provide a canonical scroll position. This is
 useful because it's very common for the *top of the element to change* during
 scrolling.
 
