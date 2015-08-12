@@ -57,7 +57,7 @@ to generate variations of the same component turned out to be a remarkably
 Ie., `<SparkScroll.div />`, `<SparkScroll.span />`,  `<SparkScroll.h1 />`, etc...
 
 The one place where angular might have an advantage is
-through it's ability to fascilitate more expressive
+through it's ability to facilitate more expressive
 syntax. For example, to [toggle a class in angular](https://github.com/gilbox/spark-scroll/blob/master/demo/index.html#L70):
 
     <!-- angular: -->
