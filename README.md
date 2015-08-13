@@ -11,7 +11,7 @@ Start with the GSAP version of the library, but note that you can use Rekapi or 
 
 Tradeoffs:
 
-* GSAP is much easier to configure. That's because rekapi has some additional configuration necessary (see [#3](https://github.com/gilbox/react-spark-scroll/issues/3)) beyond npm install spark-scroll-rekapi. If you're in the quick-and-dirty experimentation stage, use gsap to get up and running faster.
+* GSAP is much easier to configure. That's because rekapi has some additional configuration necessary (see [#3](https://github.com/gilbox/react-spark-scroll/issues/3)) beyond `npm install spark-scroll-rekapi`. If you're in the quick-and-dirty experimentation stage, use gsap to get up and running faster.
 
 * Although I haven't done any benchmarks I suspect that rekapi is marginally faster than GSAP. That's because rekapi was built around the concept of timeline-based animation and spark-scroll is all about treating the scroll position as a timeline.
 
