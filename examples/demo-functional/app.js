@@ -16,34 +16,25 @@ const topBottom = (containerRect, container) => rect =>
 const centerCenter = (containerRect, container) => rect => 
   ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight / 2);
  
-const translate3dFormatter = value => `translate3d(${value.join('px,')}px)`;
-const translate3d = (...args) => ({
-    value: args,
-    formatter: translate3dFormatter,
-    factory: translate3d
-  });
- 
-const pxFormatter = value => `${value}px`;
-const px = (...args) => ({
-    value: args,
-    formatter: pxFormatter,
-    factory: px
-  });
- 
-const rotateFormatter = value => `rotate(${value}deg)`;
-const rotate = (...args) => ({
-    value: args,
-    formatter: rotateFormatter,
-    factory: rotate
-  });
- 
-const rgbaFormatter = value => `rgba(${value.map(Math.round).join(',')})`;
-const rgba = (...args) => ({
-    value: args,
-    formatter: rgbaFormatter,
-    factory: rgba
-  });
+const topCenter = (containerRect, container) => rect => 
+  ~~(rect.top - containerRect.top - container.clientHeight / 2);
   
+const bottomBottom = (containerRect, container) => rect =>
+  ~~(rect.bottom - containerRect.top - container.clientHeight);
+  
+function createValueFactory(formatter) {
+  const factory = (...value) => ({value,formatter,factory});
+  return factory;
+}
+
+const rgb = createValueFactory(value => `rgb(${value.map(Math.round).join(',')})`);
+const rgba = createValueFactory(value => `rgba(${value.map(Math.round).join(',')})`);
+const scale = createValueFactory(value => `scale(${value})`);
+const rotate = createValueFactory(value => `rotate(${value}deg)`);
+const px = createValueFactory(value => `${value}px`);
+const percent = createValueFactory(value => `${value}%`);
+const translate3d = createValueFactory(value => `translate3d(${value.join('px,')}px)`);
+
 function mapObject(fn) {
   const result = {};
   Object.keys(this).forEach(key => result[key] = fn(this[key], key));
@@ -70,19 +61,24 @@ const resolveValue = x =>
   isNumber(x) ? x :
     x::mapObject(resolveValue); // is object
 
-// todo: currently only supports 2 keyframes
 const tween = (position, keyframes) => {
   const positions = Object.keys(keyframes);
   const position0 = positions[0];
-  const position1 = positions[1];
+  const positionN = positions[positions.length-1];
   
   if (position <= position0) return resolveValue(keyframes[position0]);
-  if (position >= position1) return resolveValue(keyframes[position1]);
+  if (position >= positionN) return resolveValue(keyframes[positionN]);
   
-  const range = position1 - position0;
-  const delta = position - position0;
+  let index = 0;
+  while (position > positions[++index]);
+  
+  const positionA = positions[index-1];
+  const positionB = positions[index];
+  const range = positionB - positionA;
+  const delta = position - positionA;
   const progress = delta / range;
-  return resolveValue(tweenValues(progress, keyframes[position0], keyframes[position1]))
+  
+  return resolveValue(tweenValues(progress, keyframes[positionA], keyframes[positionB]))
 }
 
 class DocumentRect extends Component {
@@ -186,8 +182,9 @@ class App extends Component {
   
   render() {
     return (
-      <DocumentRect formulas={[getDocumentElement, getDocumentRect, calculateScrollY, topTop, topBottom, centerCenter]}>
-      {(documentElement, documentRect, scrollY, topTop, topBottom, centerCenter) => 
+      <DocumentRect formulas={[getDocumentElement, getDocumentRect, calculateScrollY, 
+                               topTop, topBottom, topCenter, centerCenter, bottomBottom]}>
+      {(documentElement, documentRect, scrollY, topTop, topBottom, topCenter, centerCenter, bottomBottom) => 
         <div style={{minHeight:'5000px'}}>
         
           <a href="https://github.com/gilbox/spark-scroll">
@@ -257,6 +254,71 @@ class App extends Component {
               style={tween(scrollY, {
                 [posTopBottom]: { transform: rotate(0) },
                 [posCenterCenter]: { transform: rotate(360) } })}>spin</h2>
+          }</DivRect>
+          
+          {/* scale */}
+          <DivRect formulas={[topCenter]}>
+          {(posTopCenter) => 
+            <h2
+              proxy="scale-proxy"
+              style={tween(scrollY, {
+                [posTopCenter-201]: { transform: scale(0.01), opacity: 0},
+                [posTopCenter-200]: { transform: scale(0.01), opacity: 1 },
+                [posTopCenter+70]: { transform: scale(1), opacity: 1 }
+              })}>scale</h2>
+          }</DivRect>
+          
+          {/* pin, reveal, slide, color, unpin */}
+          <DivRect className="pin-cont" formulas={[topTop, bottomBottom]}>
+          {(posTopTop, posBottomBottom) =>
+            
+            <section
+              className={cx("pin",{
+                'pin-pin':scrollY > posTopTop,
+                'pin-unpin':scrollY > posBottomBottom})}>
+              
+              <h3
+                className="pin-txt"
+                style={tween(scrollY,{
+                  [posTopTop]: { top: percent(0), marginTop: px(0) },
+                  [posTopTop+50]: { top: percent(50), marginTop: px(-60) }
+                })}>pin</h3>
+                
+              <div
+                className="reveal"
+                style={tween(scrollY, {
+                  [posTopTop+100]: {width: percent(0), backgroundColor: rgba(92, 131, 47, 1)},
+                  [posTopTop+250]: {width: percent(100), backgroundColor: rgba(56, 37, 19, 1)}
+                })}>
+                <h3 className="reveal-txt">reveal</h3>
+              </div>
+              
+              <div
+                className={cx("slide",{hide:scrollY < posTopTop+250})}
+                style={tween(scrollY, {
+                  [posTopTop+250]: { bottom: percent(100), backgroundColor: rgb(92, 131, 47) },
+                  [posTopTop+400]: { bottom: percent(0), backgroundColor: rgb(40, 73, 7) },
+                  [posTopTop+450]: { bottom: percent(0), backgroundColor: rgb(0, 0, 170) },
+                  [posTopTop+500]: { bottom: percent(0), backgroundColor: rgb(170, 0, 0) },
+                  [posTopTop+550]: { bottom: percent(0), backgroundColor: rgb(92, 131, 47) }
+                })}>
+
+                {/* when we hit the appropriate scroll position, change the
+                      text to 'slide' or 'color' depending on the position */}
+                <h3 className="slide-txt">
+                  {scrollY > posTopTop+400 ? 'color' : 'slide'}
+                </h3>
+
+                <h3
+                  className={cx("unpin-txt",{hide:scrollY < posTopTop+600})}
+                  style={tween(scrollY, {
+                   [posTopTop+600]: { top: percent(100) },
+                   [posBottomBottom]: { top: percent(50) }
+                 })}>unpin</h3>
+                 
+              </div>
+                
+            </section>
           }</DivRect>
           
         </div>
