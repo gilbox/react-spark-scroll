@@ -134,6 +134,10 @@ class TrackedDiv extends Component {
 }
 
 class Track extends Component {
+  static propTypes = { ref: React.PropTypes.func,
+                       children: React.PropTypes.func.isRequired, 
+                       formulas: React.PropTypes.array }
+                       
   static defaultProps = { formulas: [identity], component: 'div' }
   
   constructor(props) {
@@ -142,12 +146,15 @@ class Track extends Component {
     const self = this;
     
     this.DecoratedComponent = class extends Component {
+      static propTypes = { ref: React.PropTypes.func }
+      
       render() {
-        const {ref} = this.props;
-        return <props.component {...props} {...this.props} 
-                  ref={r => {
-                    if (ref) ref(r);
-                    self.nodeRef = r}} />
+        const {ref = props.ref || identity} = this.props;
+        
+        return <props.component 
+                  {...props} 
+                  {...this.props} 
+                  ref={r => ref(self.nodeRef = r)} />
       }
     }
     this.state = {};
