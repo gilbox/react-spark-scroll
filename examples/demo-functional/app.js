@@ -81,7 +81,7 @@ const tween = (position, keyframes) => {
   return resolveValue(tweenValues(progress, keyframes[positionA], keyframes[positionB]))
 }
 
-class DocumentRect extends Component {
+class TrackDocument extends Component {
   static defaultProps = { formulas: [identity] }
 
   constructor(props) {
@@ -110,7 +110,7 @@ class DocumentRect extends Component {
   }
 }
 
-class DivRect extends Component {
+class TrackedDiv extends Component {
   static defaultProps = { formulas: [identity], component: 'div' }
   
   constructor(props) {
@@ -133,7 +133,7 @@ class DivRect extends Component {
   }
 }
 
-class Rect extends Component {
+class Track extends Component {
   static defaultProps = { formulas: [identity], component: 'div' }
   
   constructor(props) {
@@ -182,7 +182,7 @@ class App extends Component {
   
   render() {
     return (
-      <DocumentRect formulas={[getDocumentElement, getDocumentRect, calculateScrollY, 
+      <TrackDocument formulas={[getDocumentElement, getDocumentRect, calculateScrollY, 
                                topTop, topBottom, topCenter, centerCenter, bottomBottom]}>
       {(documentElement, documentRect, scrollY, topTop, topBottom, topCenter, centerCenter, bottomBottom) => 
         <div style={{minHeight:'5000px'}}>
@@ -194,7 +194,7 @@ class App extends Component {
               alt="Fork me on GitHub"
               dataCanonicalSrc="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" /></a>
               
-          <DivRect className="hero" formulas={[topTop]}>
+          <TrackedDiv className="hero" formulas={[topTop]}>
           { (posTopTop) =>
             <div>
               <a href="https://github.com/gilbox/react-spark-scroll">
@@ -227,37 +227,37 @@ class App extends Component {
                   [posTopTop+200]: {opacity: 0, transform: translate3d(0,-150,0)}
                 })}>v</div>
             </div>
-          }</DivRect>
+          }</TrackedDiv>
           
           {/* fade */}
-          <Rect component="h2" formulas={[topBottom, centerCenter]}>
+          <Track component="h2" formulas={[topBottom, centerCenter]}>
           {(H2,posTopBottom,posCenterCenter) => 
             <H2
               style={tween(scrollY, {
                 [posTopBottom]: {opacity: 0},
                 [posCenterCenter]: {opacity: 1} })}>fade</H2>
-          }</Rect>
+          }</Track>
           
           {/* move */}
-          <Rect component="h2" formulas={[topBottom, centerCenter]}>
+          <Track component="h2" formulas={[topBottom, centerCenter]}>
           {(H2,posTopBottom,posCenterCenter) => 
             <H2
               style={tween(scrollY, {
                 [posTopBottom]: { marginLeft: px(-500), opacity: 0 },
                 [posCenterCenter]: { marginLeft: px(0), opacity: 1 } })}>move</H2>
-          }</Rect>
+          }</Track>
 
           {/* spin */}
-          <DivRect formulas={[topBottom, centerCenter]}>
+          <TrackedDiv formulas={[topBottom, centerCenter]}>
           {(posTopBottom,posCenterCenter) => 
             <h2
               style={tween(scrollY, {
                 [posTopBottom]: { transform: rotate(0) },
                 [posCenterCenter]: { transform: rotate(360) } })}>spin</h2>
-          }</DivRect>
+          }</TrackedDiv>
           
           {/* scale */}
-          <DivRect formulas={[topCenter]}>
+          <TrackedDiv formulas={[topCenter]}>
           {(posTopCenter) => 
             <h2
               proxy="scale-proxy"
@@ -266,10 +266,10 @@ class App extends Component {
                 [posTopCenter-200]: { transform: scale(0.01), opacity: 1 },
                 [posTopCenter+70]: { transform: scale(1), opacity: 1 }
               })}>scale</h2>
-          }</DivRect>
+          }</TrackedDiv>
           
           {/* pin, reveal, slide, color, unpin */}
-          <DivRect className="pin-cont" formulas={[topTop, bottomBottom]}>
+          <TrackedDiv className="pin-cont" formulas={[topTop, bottomBottom]}>
           {(posTopTop, posBottomBottom) =>
             
             <section
@@ -319,10 +319,10 @@ class App extends Component {
               </div>
                 
             </section>
-          }</DivRect>
+          }</TrackedDiv>
           
         </div>
-      }</DocumentRect>
+      }</TrackDocument>
     )
   }
 }
