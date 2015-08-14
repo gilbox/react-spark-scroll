@@ -6,7 +6,6 @@ const _ = require('lodash');
 
 class Actor {
   constructor(tl, context) {
-    super();
     this.tl = tl;
     this.context = context;
     this.frames = [];
@@ -76,7 +75,6 @@ class Actor {
 
 class GSAPAnimator {
   constructor() {
-    super();
     this.tl = new TimelineLite({useFrames:true});
   }
 

@@ -1,0 +1,255 @@
+/*
+color scheme...
+D8CAA8
+5C832F
+284907
+382513
+363942
+*/
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #5c832f;
+  font-family: 'Expletus Sans', cursive;
+  color: #D8CAA8;
+  font-weight: 700;
+}
+
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+a, a:visited, a:active {
+  color: #D8CAA8;
+}
+
+p {
+  font-size: 24px;
+}
+
+h1,h2 {
+  font-size: 76px;
+  display: block;
+  text-align: center;
+  margin-bottom: 150px;
+}
+
+h1 {
+  margin:0;
+  padding: 50px 0 0 0;
+  pointer-events: none;
+}
+
+h3 {
+  font-size: 88px;
+}
+
+.hero {
+  position: relative;
+  height: 100vh;
+}
+
+.down-arrow {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  margin-left: -22px;
+  font-size: 100px;
+  color: #7ea54e;
+}
+
+.intro {
+  margin: 0;
+}
+
+.halfFrame {
+  top: 0;
+  position: fixed;
+  height: 50vh;
+  border: 1px solid black;
+  opacity: 0.5;
+  width: 100%;
+}
+
+/* pin */
+.pin {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+}
+
+.pin-pin {
+  position: fixed;
+}
+
+.pin-unpin {
+  position: absolute;
+  bottom: 0;
+  top: auto;
+}
+
+.pin-txt {
+  position: absolute;
+  top: 0;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.pin-cont {
+  position: relative;
+  height: 1400px;
+}
+
+.pin-cont-proxy {
+  position: absolute;
+  height: 100%;
+}
+
+/* slide, reveal */
+.slide-proxy {
+  height:200px;
+}
+
+.slide,
+.reveal {
+  position: absolute;
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: blue;
+  z-index: 5;
+}
+
+.reveal {
+  overflow: hidden;
+}
+
+.slide-txt,
+.reveal-txt {
+  position: absolute;
+  top: 50%;
+  margin: -70px 0 0 0;
+  width: 100%;
+  text-align: center;
+}
+
+.slide-spacer {
+  height: 600px;
+}
+
+/* unpin */
+.unpin-txt {
+  position: absolute;
+  top: 100%;
+  margin: 10px;
+  width: 100%;
+  text-align: center;
+  z-index: 5;
+}
+
+/* parallax */
+
+.parallax-cont {
+  position: relative;
+  overflow: hidden;
+  height: 300px;
+}
+
+.parallax-cont-proxy {
+  position: absolute;
+  height: 100%;
+}
+
+.parallax-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 300px;
+  z-index:3;
+  -webkit-box-shadow: inset 0px 0px 35px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 0px 0px 35px 0px rgba(0,0,0,0.75);
+  box-shadow: inset 0px 0px 35px 0px rgba(0,0,0,0.75);
+
+}
+
+.parallax-img {
+  background: url('bg.jpg');
+  height: 800px;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+.parallax-txt {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  margin-left: -180px;
+}
+
+/* misc */
+.fade1 {
+  opacity: .5;
+}
+.fade2 {
+  opacity: .3;
+}
+
+.hide {
+  display: none;
+}
+
+.spacer50 {
+  height: 50vh;
+}
+
+.spacer10 {
+  height: 10vh;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.center {
+  display: block;
+  margin: auto;
+  text-align: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+/* - - - - */
+
+.Image {
+  position: absolute;
+  height: 400px;
+  width: 400px;
+}
+
+.example-enter {
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+}
+
+.example-leave {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+}
