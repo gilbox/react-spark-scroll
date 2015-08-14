@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import cx from 'classnames';
+import {Easer} from 'functional-easing';
+
+const easeOutBounce = new Easer().using('out-bounce');
 
 const isNumber = x => typeof x === 'number';
 const isWrapped = x => !!x.formatter;
@@ -61,7 +64,7 @@ const resolveValue = x =>
   isNumber(x) ? x :
     x::mapObject(resolveValue); // is object
 
-function tween(position, keyframes) {
+function tween(position, keyframes, ease=identity) {
   const positions = Object.keys(keyframes);
   const position0 = positions[0];
   const positionN = positions[positions.length-1];
@@ -78,7 +81,8 @@ function tween(position, keyframes) {
   const delta = position - positionA;
   const progress = delta / range;
   
-  return resolveValue(tweenValues(progress, keyframes[positionA], keyframes[positionB]))
+  return resolveValue(tweenValues(
+    ease(progress), keyframes[positionA], keyframes[positionB]))
 }
 
 class TrackDocument extends Component {
@@ -250,7 +254,8 @@ class App extends Component {
             <H2
               style={tween(scrollY, {
                 [posTopBottom]: { marginLeft: px(-500), opacity: 0 },
-                [posCenterCenter]: { marginLeft: px(0), opacity: 1 } })}>move</H2>
+                [posCenterCenter]: { marginLeft: px(0), opacity: 1 } 
+              }, easeOutBounce)}>move</H2>
           }</Track>
 
           {/* spin */}
@@ -271,7 +276,7 @@ class App extends Component {
                 [posTopCenter-201]: { transform: scale(0.01), opacity: 0},
                 [posTopCenter-200]: { transform: scale(0.01), opacity: 1 },
                 [posTopCenter+70]: { transform: scale(1), opacity: 1 }
-              })}>scale</h2>
+              }, easeOutBounce)}>scale</h2>
           }</TrackedDiv>
           
           {/* pin, reveal, slide, color, unpin */}
