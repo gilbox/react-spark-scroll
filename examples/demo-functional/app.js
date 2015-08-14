@@ -61,7 +61,7 @@ const resolveValue = x =>
   isNumber(x) ? x :
     x::mapObject(resolveValue); // is object
 
-const tween = (position, keyframes) => {
+function tween(position, keyframes) {
   const positions = Object.keys(keyframes);
   const position0 = positions[0];
   const positionN = positions[positions.length-1];
@@ -139,13 +139,12 @@ class Track extends Component {
   constructor(props) {
     super(props);
     
-    const {component:Comp} = props;
     const self = this;
     
     this.DecoratedComponent = class extends Component {
       render() {
         const {ref} = this.props;
-        return <Comp {...props} {...this.props} 
+        return <props.component {...props} {...this.props} 
                   ref={r => {
                     if (ref) ref(r);
                     self.nodeRef = r}} />
