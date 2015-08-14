@@ -36,7 +36,7 @@ const rotate = (...args) => ({
     formatter: rotateFormatter,
     factory: rotate
   });
-
+ 
 const rgbaFormatter = value => `rgba(${value.map(Math.round).join(',')})`;
 const rgba = (...args) => ({
     value: args,
@@ -186,8 +186,8 @@ class App extends Component {
   
   render() {
     return (
-      <DocumentRect formulas={[getDocumentElement, getDocumentRect, calculateScrollY]}>
-      {(documentElement, documentRect, scrollY) => 
+      <DocumentRect formulas={[getDocumentElement, getDocumentRect, calculateScrollY, topTop, topBottom, centerCenter]}>
+      {(documentElement, documentRect, scrollY, topTop, topBottom, centerCenter) => 
         <div style={{minHeight:'5000px'}}>
         
           <a href="https://github.com/gilbox/spark-scroll">
@@ -197,7 +197,7 @@ class App extends Component {
               alt="Fork me on GitHub"
               dataCanonicalSrc="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" /></a>
               
-          <DivRect className="hero" formulas={[topTop(documentRect)]}>
+          <DivRect className="hero" formulas={[topTop]}>
           { (posTopTop) =>
             <div>
               <a href="https://github.com/gilbox/react-spark-scroll">
@@ -233,7 +233,7 @@ class App extends Component {
           }</DivRect>
           
           {/* fade */}
-          <Rect component="h2" formulas={[topBottom(documentRect, documentElement), centerCenter(documentRect, documentElement)]}>
+          <Rect component="h2" formulas={[topBottom, centerCenter]}>
           {(H2,posTopBottom,posCenterCenter) => 
             <H2
               style={tween(scrollY, {
@@ -242,7 +242,7 @@ class App extends Component {
           }</Rect>
           
           {/* move */}
-          <Rect component="h2" formulas={[topBottom(documentRect, documentElement), centerCenter(documentRect, documentElement)]}>
+          <Rect component="h2" formulas={[topBottom, centerCenter]}>
           {(H2,posTopBottom,posCenterCenter) => 
             <H2
               style={tween(scrollY, {
@@ -251,7 +251,7 @@ class App extends Component {
           }</Rect>
 
           {/* spin */}
-          <DivRect formulas={[topBottom(documentRect, documentElement), centerCenter(documentRect, documentElement)]}>
+          <DivRect formulas={[topBottom, centerCenter]}>
           {(posTopBottom,posCenterCenter) => 
             <h2
               style={tween(scrollY, {
