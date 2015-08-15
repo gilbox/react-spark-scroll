@@ -1,185 +1,20 @@
 import React, {Component} from 'react';
 import cx from 'classnames';
 import {Easer} from 'functional-easing';
+import {Track, TrackedDiv, TrackDocument} from './lib/track';
+import {tween} from './lib/tween';
+import {topTop,
+        topBottom,
+        centerCenter,
+        topCenter,
+        bottomBottom,
+        getDocumentRect,
+        getDocumentElement,
+        calculateScrollY} from './lib/tracking-formulas';
+import {rgb, rgba, scale, rotate, 
+        px, percent, translate3d} from './lib/tween-value-factories';
 
 const easeOutBounce = new Easer().using('out-bounce');
-
-const isNumber = x => typeof x === 'number';
-const isWrapped = x => !!x.formatter;
-
-const defaultRect = { top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0 };
-const identity = x => x;
-
-const topTop = containerRect => rect => 
-  ~~(rect.top - containerRect.top);
-  
-const topBottom = (containerRect, container) => rect => 
-  ~~(rect.top - containerRect.top - container.clientHeight);
-  
-const centerCenter = (containerRect, container) => rect => 
-  ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight / 2);
- 
-const topCenter = (containerRect, container) => rect => 
-  ~~(rect.top - containerRect.top - container.clientHeight / 2);
-  
-const bottomBottom = (containerRect, container) => rect =>
-  ~~(rect.bottom - containerRect.top - container.clientHeight);
-  
-function createValueFactory(formatter) {
-  const factory = (...value) => ({value,formatter,factory});
-  return factory;
-}
-
-const rgb = createValueFactory(value => `rgb(${value.map(Math.round).join(',')})`);
-const rgba = createValueFactory(value => `rgba(${value.map(Math.round).join(',')})`);
-const scale = createValueFactory(value => `scale(${value})`);
-const rotate = createValueFactory(value => `rotate(${value}deg)`);
-const px = createValueFactory(value => `${value}px`);
-const percent = createValueFactory(value => `${value}%`);
-const translate3d = createValueFactory(value => `translate3d(${value.join('px,')}px)`);
-
-function mapObject(fn) {
-  const result = {};
-  Object.keys(this).forEach(key => result[key] = fn(this[key], key));
-  return result;
-}
-
-function tweenValues(progress, a, b) {
-  // todo : more error handlers?
-  if (isWrapped(a)) {
-    if (!isWrapped(b)) throw(Error('tweenValues mismatch: tried to tween wrapped and unwrapped values'));
-    return a.factory(...tweenValues(progress, a.value, b.value));
-  } else if (a instanceof Array) {
-    if (!b instanceof Array) throw(Error('tweenValues expected two arrays but only found one'));
-    return a.map((value,index) => value + progress*(b[index] - value));
-  } else if (isNumber(a)) {
-    return a + progress * (b-a);  
-  } else { // object
-    return a::mapObject((v,k) => tweenValues(progress, v, b[k]))
-  }
-}
-
-const resolveValue = x => 
-  isWrapped(x) ? x.formatter(x.value) : 
-  isNumber(x) ? x :
-    x::mapObject(resolveValue); // is object
-
-function tween(position, keyframes, ease=identity) {
-  const positions = Object.keys(keyframes);
-  const position0 = positions[0];
-  const positionN = positions[positions.length-1];
-  
-  if (position <= position0) return resolveValue(keyframes[position0]);
-  if (position >= positionN) return resolveValue(keyframes[positionN]);
-  
-  let index = 0;
-  while (position > positions[++index]);
-  
-  const positionA = positions[index-1];
-  const positionB = positions[index];
-  const range = positionB - positionA;
-  const delta = position - positionA;
-  const progress = delta / range;
-  
-  return resolveValue(tweenValues(
-    ease(progress), keyframes[positionA], keyframes[positionB]))
-}
-
-class TrackDocument extends Component {
-  static defaultProps = { formulas: [identity] }
-
-  constructor(props) {
-    super(props);
-    this.state = { rect: null };
-  }
-  
-  componentDidMount() {
-    window.addEventListener('scroll', event => {
-      this.setState({ rect: document.documentElement.getBoundingClientRect() });
-    });
-  }
-
-  render() {
-    let {rect} = this.state;
-    let element = typeof document !== 'undefined' && document.documentElement;
-    if (!rect) {
-      if (element) {
-        rect = document.documentElement.getBoundingClientRect();
-      } else {
-        rect = defaultRect;
-        element = {}; // bah
-      }
-    }
-    return this.props.children(...this.props.formulas.map(formula => formula(rect, element)))
-  }
-}
-
-class TrackedDiv extends Component {
-  static defaultProps = { formulas: [identity], component: 'div' }
-  
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-  
-  componentWillReceiveProps() {
-    const node = React.findDOMNode(this.div);
-    const rect = node.getBoundingClientRect();
-    this.setState({rect});
-  }
-
-  render() {
-    const {rect=defaultRect} = this.state;
-    const {component:Comp} = this.props;
-    return <Comp ref={r => this.div = r} {...this.props}>
-      {this.props.children(...this.props.formulas.map(formula => formula(rect)))}
-    </Comp>;
-  }
-}
-
-class Track extends Component {
-  static propTypes = { ref: React.PropTypes.func,
-                       children: React.PropTypes.func.isRequired, 
-                       formulas: React.PropTypes.array }
-                       
-  static defaultProps = { formulas: [identity], component: 'div' }
-  
-  constructor(props) {
-    super(props);
-    
-    const self = this;
-    
-    this.DecoratedComponent = class extends Component {
-      static propTypes = { ref: React.PropTypes.func }
-      
-      render() {
-        const {ref = props.ref || identity} = this.props;
-        
-        return <props.component 
-                  {...props} 
-                  {...this.props} 
-                  ref={r => ref(self.nodeRef = r)} />
-      }
-    }
-    this.state = {};
-  }
-  
-  componentWillReceiveProps() {
-    const node = React.findDOMNode(this.nodeRef);
-    const rect = node.getBoundingClientRect();
-    this.setState({rect});
-  }
-
-  render() {
-    const {rect=defaultRect} = this.state;
-    return this.props.children(this.DecoratedComponent, 
-      ...this.props.formulas.map(formula => formula(rect)));
-  }
-}
-
-const getDocumentRect = documentRect => documentRect;
-const getDocumentElement = (_,documentElement) => documentElement;
-const calculateScrollY = ({top}) => -top;
 
 class App extends Component {
   componentDidMount() {
