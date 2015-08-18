@@ -2,12 +2,6 @@ const React = require('react');
 const _ = require('lodash');
 const sparkFactory = require('./spark');
 
-const Foo = React.createClass({
-  render() {
-    return <div {...this.props}>{this.props.children}</div>
-  }
-});
-
 function factory(options) {
 
   const proxyElements = {};
