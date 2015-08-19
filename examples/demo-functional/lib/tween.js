@@ -1,5 +1,6 @@
 export const isNumber = x => typeof x === 'number';
-export const isWrapped = x => !!x.formatter;
+export const isWrapped = x => !!x.tween;
+export const isNotWrapped = x => !x.tween;
 const identity = x => x;
 
 function mapObject(fn) {
@@ -11,8 +12,8 @@ function mapObject(fn) {
 export function tweenValues(progress, a, b) {
   // todo : more error handlers?
   if (isWrapped(a)) {
-    if (!isWrapped(b)) throw(Error('tweenValues mismatch: tried to tween wrapped and unwrapped values'));
-    return a.factory(...tweenValues(progress, a.value, b.value));
+    if (isNotWrapped(b)) throw(Error('tweenValues mismatch: tried to tween wrapped and unwrapped values'));
+    return a.tween(progress, a, b);
   } else if (a instanceof Array) {
     if (!b instanceof Array) throw(Error('tweenValues expected two arrays but only found one'));
     return a.map((value,index) => value + progress*(b[index] - value));
@@ -24,10 +25,28 @@ export function tweenValues(progress, a, b) {
 }
 
 export const resolveValue = x => 
-  isWrapped(x) ? x.formatter(x.value) : 
+  isWrapped(x) ? x.resolveValue() :
   isNumber(x) ? x :
     x::mapObject(resolveValue); // is object
 
+export function combine(...wrappedValues) {
+  return {
+    wrappedValues,
+    resolveValue() {
+      return wrappedValues.map(resolveValue).join(' ');
+    },
+    tween(progress, 
+      {wrappedValues: wrappedValuesA}, 
+      {wrappedValues: wrappedValuesB}
+    ) {
+      return wrappedValuesA
+        .map((wrappedValueA, index) => 
+          tweenValues(progress, wrappedValueA, wrappedValuesB[index]))
+        .join(' ');
+    }
+  }
+}
+    
 export function tween(position, keyframes, ease=identity) {
   const positions = Object.keys(keyframes);
   const position0 = positions[0];
@@ -41,15 +60,30 @@ export function tween(position, keyframes, ease=identity) {
   
   const positionA = positions[index-1];
   const positionB = positions[index];
+  
+  // kinda weird
+  if (positionA instanceof Function || positionB instanceof Function) {
+    throw Error('Keyframes are not allowed to contain function as properties', keyframes);
+  }
+  
   const range = positionB - positionA;
   const delta = position - positionA;
   const progress = delta / range;
   
-  return resolveValue(tweenValues(
-    ease(progress), keyframes[positionA], keyframes[positionB]))
+  return tweenValues(
+    ease(progress), 
+    keyframes[positionA], 
+    keyframes[positionB])
 }
 
 export function createTweenValueFactory(formatter) {
-  const factory = (...value) => ({value,formatter,factory});
-  return factory;
+  return (...value) => ({
+    value,
+    tween(progress, a, b) { 
+      return formatter(tweenValues(progress, a.value, b.value)) 
+    },
+    resolveValue() { 
+      return formatter(value)
+    }
+  });
 }

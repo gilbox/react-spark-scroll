@@ -2,6 +2,11 @@
 
 React port of [spark-scroll](https://github.com/gilbox/spark-scroll/).
 
+## The future!
+
+This repo has been around for a little while now. However, recently I re-created the demo utilizing a drastically different approach which was inspired by [`react-motion`](https://github.com/chenglou/react-motion). You can find this experimental demo in the `examples/demo-functional` dir. It completely 
+does away with animators and direct DOM manipulation in favor of pure functional elegance. 
+Compatibility considerations and performance implications, etc. have not been explored. Going forward, it's likely that the old way will be deprecated and this new approach will take it's place.
 
 # install
 
@@ -503,9 +508,3 @@ required by `GSAPAnimator`. Load those files in however you wish, and then copy
 - [spark-scroll-ease](https://github.com/gilbox/spark-scroll/blob/master/src/spark-scroll.coffee#L213)
   attribute (Not really liking this feature)
   
-## The future?
-
-There is a partially-complete, experimental demo in `examples/demo-functional` 
-that takes a drastically different approach which was inspired by react-motion. It completely 
-does away with animators and direct DOM manipulation in favor of pure functional elegance. 
-Performance implications, etc. have not been explored.

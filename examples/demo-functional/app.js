@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import cx from 'classnames';
 import {Easer} from 'functional-easing';
 import {Track, TrackedDiv, TrackDocument} from './lib/track';
-import {tween} from './lib/tween';
+import {tween, combine} from './lib/tween';
 import {topTop,
         topBottom,
         centerCenter,
         topCenter,
         bottomBottom,
+        bottomTop,
         getDocumentRect,
         getDocumentElement,
         calculateScrollY} from './lib/tracking-formulas';
@@ -28,8 +29,10 @@ class App extends Component {
   render() {
     return (
       <TrackDocument formulas={[getDocumentElement, getDocumentRect, calculateScrollY, 
-                               topTop, topBottom, topCenter, centerCenter, bottomBottom]}>
-      {(documentElement, documentRect, scrollY, topTop, topBottom, topCenter, centerCenter, bottomBottom) => 
+                               topTop, topBottom, topCenter, centerCenter, bottomBottom, 
+                               bottomTop]}>
+      {(documentElement, documentRect, scrollY, topTop, 
+        topBottom, topCenter, centerCenter, bottomBottom, bottomTop) => 
         <div style={{minHeight:'5000px'}}>
         
           <a href="https://github.com/gilbox/spark-scroll">
@@ -166,6 +169,59 @@ class App extends Component {
                 
             </section>
           }</TrackedDiv>
+          
+          <div className="spacer50"></div>
+
+          {/* parallax */}
+          
+          <a href="https://www.flickr.com/photos/rafagarcia_/15262287738/in/pool-83823859@N00/">
+            <Track component="div" formulas={[topBottom, bottomTop]}>
+            {(Div, posTopBottom, posBottomTop) =>
+              <Div className="parallax-cont">
+                <div className="parallax-shadow" />
+
+                <div
+                  className="parallax-img"
+                  style={tween(scrollY, {
+                    [posTopBottom]: {transform: translate3d(0,0,0)},
+                    [posBottomTop]: {transform: translate3d(0,-80,0)}
+                  })}></div>
+
+                <h3
+                  className="parallax-txt fade2"
+                  style={tween(scrollY, {
+                    [posTopBottom]: { transform: combine(scale(0.8), translate3d(0,120,0)) },
+                    [posBottomTop]: { transform: combine(scale(0.8), translate3d(0,-120,0)) }
+                  })}>parallax</h3>
+
+                <h3
+                  className="parallax-txt fade1"
+                  style={tween(scrollY, {
+                    [posTopBottom]: {transform: combine(scale(0.9), translate3d(0,160,0)) },
+                    [posBottomTop]: {transform: combine(scale(0.9), translate3d(0,-160,0)) }
+                  })}>parallax</h3>
+
+                <h3
+                  className="parallax-txt"
+                  style={tween(scrollY, {
+                    [posTopBottom]: {transform: translate3d(0,200,0)},
+                    [posBottomTop]: {transform: translate3d(0,-200,0)}
+                  })}>parallax</h3>
+              </Div>
+            }</Track>
+          </a>
+          
+          <div className="spacer50"></div>
+
+          <a href="https://github.com/gilbox/react-spark-scroll">
+            <img className="center" src="GitHub-Mark-64px.png" alt=""/>
+          </a>
+
+          <div className="spacer10"></div>
+
+          <p className="center">This demo was inspired by <a href="http://janpaepke.github.io/ScrollMagic/">ScrollMagic</a></p>
+
+          <div className="spacer10"></div>
           
         </div>
       }</TrackDocument>
