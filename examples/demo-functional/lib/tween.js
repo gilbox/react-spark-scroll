@@ -16,7 +16,7 @@ export function tweenValues(progress, a, b) {
     return a.tween(progress, a, b);
   } else if (a instanceof Array) {
     if (!b instanceof Array) throw(Error('tweenValues expected two arrays but only found one'));
-    return a.map((value,index) => value + progress*(b[index] - value));
+    return a.map((value,index) => tweenValues(progress, value, b[index]));
   } else if (isNumber(a)) {
     return a + progress * (b-a);  
   } else { // object
@@ -76,14 +76,19 @@ export function tween(position, keyframes, ease=identity) {
     keyframes[positionB])
 }
 
-export function createTweenValueFactory(formatter) {
-  return (...value) => ({
-    value,
-    tween(progress, a, b) { 
-      return formatter(tweenValues(progress, a.value, b.value)) 
-    },
-    resolveValue() { 
-      return formatter(value)
+export function createTweenValueFactory(formatter, defaultWrapper) {
+  return (...value) => {
+    if (defaultWrapper) 
+      value = value.map(v => isWrapped(v) ? v : defaultWrapper(v));
+      
+    return {
+      value,
+      tween(progress, a, b) { 
+        return formatter(tweenValues(progress, a.value, b.value)) 
+      },
+      resolveValue() {
+        return formatter(value.map(resolveValue))
+      }
     }
-  });
+  }
 }
