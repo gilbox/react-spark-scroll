@@ -21,7 +21,7 @@ Tradeoffs:
 
 * Although I haven't done any benchmarks I suspect that rekapi is marginally faster than GSAP. That's because rekapi was built around the concept of timeline-based animation and spark-scroll is all about treating the scroll position as a timeline. *Update: I performed some unscientific tests and GSAP actually seems to perform significantly better*
 
-* *GSAP supports animating SVGs*. This is the main deciding factor for me. If I don't need SVG animation I prefer using rekapi although it's not a strong preference.
+* *GSAP supports animating SVGs*. ~~This is the main deciding factor for me. If I don't need SVG animation I prefer using rekapi although it's not a strong preference.~~
 
 * Rekapi and GSAP have different licenses.
 
