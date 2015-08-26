@@ -6,7 +6,7 @@ React port of [spark-scroll](https://github.com/gilbox/spark-scroll/).
 
 This repo has been around for a little while now. However, recently I re-created the demo utilizing a drastically different approach which was inspired by [`react-motion`](https://github.com/chenglou/react-motion). You can find this experimental demo in the `examples/demo-functional` dir. It completely 
 does away with animators and direct DOM manipulation in favor of pure functional elegance. 
-Compatibility considerations and performance implications, etc. have not been explored. Going forward, it's likely that the old way will be deprecated and this new approach will take it's place.
+Compatibility considerations and performance implications, etc. have not been explored. ~~Going forward, it's likely that the old way will be deprecated and this new approach will take it's place.~~ *Update:* performance suffers significantly because of repeated dom-diffing, so I will probably break this out into it's own repo instead.
 
 # install
 
@@ -19,9 +19,9 @@ Tradeoffs:
 
 * GSAP is much easier to configure. That's because rekapi has some additional configuration necessary (see [#3](https://github.com/gilbox/react-spark-scroll/issues/3)) beyond `npm install spark-scroll-rekapi`. If you're in the quick-and-dirty experimentation stage, use gsap to get up and running faster.
 
-* Although I haven't done any benchmarks I suspect that rekapi is marginally faster than GSAP. That's because rekapi was built around the concept of timeline-based animation and spark-scroll is all about treating the scroll position as a timeline.
+* Although I haven't done any benchmarks I suspect that rekapi is marginally faster than GSAP. That's because rekapi was built around the concept of timeline-based animation and spark-scroll is all about treating the scroll position as a timeline. *Update: I performed some unscientific tests and GSAP actually seems to perform significantly better*
 
-* *GSAP supports animating SVGs*. This is the main deciding factor for me. If I don't need SVG animation I prefer using rekapi although it's not a strong preference.
+* *GSAP supports animating SVGs*. ~~This is the main deciding factor for me. If I don't need SVG animation I prefer using rekapi although it's not a strong preference.~~
 
 * Rekapi and GSAP have different licenses.
 
