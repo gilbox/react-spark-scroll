@@ -104,15 +104,16 @@ export function tween(position, keyframes, ease=identity) {
  * return a value factory.
  */
 export function createTweenValueFactory(formatter, defaultWrapper) {
+  const tween = (progress, a, b) =>
+    formatter(tweenValues(progress, a.value, b.value));
+  
   return (...value) => {
     if (defaultWrapper) 
       value = value.map(v => isWrapped(v) ? v : defaultWrapper(v));
       
     return {
       value,
-      tween(progress, a, b) { 
-        return formatter(tweenValues(progress, a.value, b.value)) 
-      },
+      tween,
       resolveValue() {
         return formatter(value.map(resolveValue))
       }
