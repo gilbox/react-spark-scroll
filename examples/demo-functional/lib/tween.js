@@ -138,17 +138,21 @@ export function createTweenValueFactory(formatter, defaultWrapper) {
 export function combine(...wrappedValues) {
   return {
     wrappedValues,
+    tween: combineTween,
     resolveValue() {
       return wrappedValues.map(resolveValue).join(' ');
-    },
-    tween(progress, 
-      {wrappedValues: wrappedValuesA}, 
-      {wrappedValues: wrappedValuesB}
-    ) {
-      return wrappedValuesA
-        .map((wrappedValueA, index) => 
-          tweenValues(progress, wrappedValueA, wrappedValuesB[index]))
-        .join(' ');
     }
   }
+}
+
+// this function is only for `combine` above
+// it's placed outside of `combine` as an optimization
+function combineTween(progress, 
+  {wrappedValues: wrappedValuesA}, 
+  {wrappedValues: wrappedValuesB}
+) {
+  return wrappedValuesA
+    .map((wrappedValueA, index) => 
+      tweenValues(progress, wrappedValueA, wrappedValuesB[index]))
+    .join(' ');
 }
