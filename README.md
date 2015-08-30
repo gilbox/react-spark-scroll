@@ -6,7 +6,8 @@ React port of [spark-scroll](https://github.com/gilbox/spark-scroll/).
 
 This repo has been around for a little while now. However, recently I re-created the demo utilizing a drastically different approach which was inspired by [`react-motion`](https://github.com/chenglou/react-motion). You can find this experimental demo in the `examples/demo-functional` dir. It completely 
 does away with animators and direct DOM manipulation in favor of pure functional elegance. 
-Compatibility considerations and performance implications, etc. have not been explored. ~~Going forward, it's likely that the old way will be deprecated and this new approach will take it's place.~~ *Update:* performance suffers significantly because of repeated dom-diffing, so I will probably break this out into it's own repo instead.
+Compatibility considerations and performance implications, etc. have not been explored. ~~Going forward, it's likely that the old way will be deprecated and this new approach will take it's place.~~ ~~*Update:* performance suffers significantly because of repeated dom-diffing, so I will probably break this out into it's own repo instead.~~
+*Update2*: It's been broken out into is own project, **[react-track](https://github.com/gilbox/react-track)**
 
 # install
 
