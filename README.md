@@ -67,32 +67,36 @@ The one place where angular might have an advantage is
 through it's ability to facilitate more expressive
 syntax. For example, to [toggle a class in angular](https://github.com/gilbox/spark-scroll/blob/master/demo/index.html#L70):
 
-    <!-- angular: -->
-    <section
-      class="pin"
-      spark-trigger="pin-cont"
-      spark-scroll="{
-          topTop: { 'downAddClass,upRemoveClass': 'pin-pin' },
-          bottomBottom: {  'downAddClass,upRemoveClass': 'pin-unpin' }
-      }">
+```html
+<!-- angular: -->
+<section
+  class="pin"
+  spark-trigger="pin-cont"
+  spark-scroll="{
+      topTop: { 'downAddClass,upRemoveClass': 'pin-pin' },
+      bottomBottom: {  'downAddClass,upRemoveClass': 'pin-unpin' }
+  }">
+```
 
 ...vs [in react](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo/app.js#L131):
 
-    <SparkScroll.section
-      className={cx("pin",{
-        'pin-pin':this.state.pinPin,
-        'pin-unpin':this.state.pinUnpin})}
-      proxy="pin-cont"
-      timeline={{
-        topTop: {
-          onDown: () => this.setState({pinPin:true}),
-          onUp:   () => this.setState({pinPin:false})
-        },
-        bottomBottom: {
-          onDown: () => this.setState({pinUnpin:true}),
-          onUp:   () => this.setState({pinUnpin:false})
-        }
-      }}>
+```jsx
+<SparkScroll.section
+  className={cx("pin",{
+    'pin-pin':this.state.pinPin,
+    'pin-unpin':this.state.pinUnpin})}
+  proxy="pin-cont"
+  timeline={{
+     topTop: {
+       onDown: () => this.setState({pinPin:true}),
+       onUp:   () => this.setState({pinPin:false})
+     },
+     bottomBottom: {
+       onDown: () => this.setState({pinUnpin:true}),
+       onUp:   () => this.setState({pinUnpin:false})
+     }
+  }}>
+```
 
 Note that a `proxy` [is used](https://github.com/gilbox/react-spark-scroll/blob/master/examples/demo-gsap/app.js#L129) 
 to provide a canonical scroll position. This is
@@ -109,105 +113,112 @@ angular syntax in React but I'm not sure if that's a good idea.
 
 # setup
 
-    // the require statement returns a factory function, which we can call
-    // with an options object. `invalidateAutomatically:true` is a very
-    // common option.
-    //
-    // Note: You should normally call this factory only once, so in an application
-    // with multiple JS files that need SparkScroll, it should
-    // probably live in it's own file (see the examples/demo/app-spark.js)
-    var {SparkScroll, SparkProxy, sparkScrollFactory} =
-      require('react-spark-scroll/spark-scroll-rekapi')({
-        invalidateAutomatically: true
-      });
+```jsx
+// the require statement returns a factory function, which we can call
+// with an options object. `invalidateAutomatically:true` is a very
+// common option.
+//
+// Note: You should normally call this factory only once, so in an application
+// with multiple JS files that need SparkScroll, it should
+// probably live in it's own file (see the examples/demo/app-spark.js)
+var {SparkScroll, SparkProxy, sparkScrollFactory} =
+  require('react-spark-scroll/spark-scroll-rekapi')({
+    invalidateAutomatically: true
+  });
 
-    // (optional)
-    // We can wrap any component using the factory methods
-    // Assume that `MyClass` is a React class we created
-    SparkScroll['MyClass'] = sparkScrollFactory(MyClass);
+// (optional)
+// We can wrap any component using the factory methods
+// Assume that `MyClass` is a React class we created
+SparkScroll['MyClass'] = sparkScrollFactory(MyClass);
 
-    var App = React.createClass({
-      render() {
-        return (
+var App = React.createClass({
+  render() {
+    return (
 
-          <SparkScroll.h1
-            timeline={{
-              topBottom: {opacity: 0},
-              centerCenter: {opacity: 1}
-            }}>fade</SparkScroll.h1>
+      <SparkScroll.h1
+        timeline={{
+          topBottom: {opacity: 0},
+          centerCenter: {opacity: 1}
+        }}>fade</SparkScroll.h1>
 
-          <SparkScroll.MyClass
-            myClassProperty="some value that MyClass requires"
-            timeline={{
-              'topTop+100': {width: '0%', backgroundColor: '#5c832f'},
-              'topTop+250': {width: ['100%', 'easeOutQuart'], backgroundColor: '#382513'}
-            }} />
-        )
-      }
-    });
-
+      <SparkScroll.MyClass
+        myClassProperty="some value that MyClass requires"
+        timeline={{
+          'topTop+100': {width: '0%', backgroundColor: '#5c832f'},
+          'topTop+250': {width: ['100%', 'easeOutQuart'], backgroundColor: '#382513'}
+        }} />
+    )
+  }
+});
+```
 
 # usage
 
 
 ## Basic Callback Example
 
-    <SparkScroll.h1
-      timeline={{
-        120:{ onUp: _ => console.log('scrolling up past 120!') },
-        121:{ 'onUp,onDown': e => console.log('going ' + (e==='onUp' ? 'up!':'down!')) }
-      }}>
-      This Title is Sparky
-    </h1>
-
+```jsx
+<SparkScroll.h1
+  timeline={{
+    120:{ onUp: _ => console.log('scrolling up past 120!') },
+    121:{ 'onUp,onDown': e => console.log('going ' + (e==='onUp' ? 'up!':'down!')) }
+  }}>
+  This Title is Sparky
+</h1>
+```
 
 ## Formula Example
 
-    <SparkScroll.h1
-      timeline={{
-        topTop:{ onUp: _ => console.log('scrolling up past element top hit top of viewport!') },
-        'bottomBottom+50':{ 'onUp,onDown': e => console.log('going ' + (e==='onUp' ? 'up!':'down!')) }
-      }}>
-      This Title is Sparky
-    </h1>
+```jsx
+<SparkScroll.h1
+  timeline={{
+    topTop:{ onUp: _ => console.log('scrolling up past element top hit top of viewport!') },
+    'bottomBottom+50':{ 'onUp,onDown': e => console.log('going ' + (e==='onUp' ? 'up!':'down!')) }
+  }}>
+  This Title is Sparky
+</h1>
+```
 
 
 ## Animated Example (with formulas)
 
-    <SparkScroll.h1
-      timeline={{
-        topTop:{ color: '#f00', marginLeft: '50px' },
-        topBottom:{ color: '#000', marginLeft: '0px' }
-      }}>
-      This Title is Spark Animated
-    </h1>
-
+```jsx
+<SparkScroll.h1
+  timeline={{
+    topTop:{ color: '#f00', marginLeft: '50px' },
+    topBottom:{ color: '#000', marginLeft: '0px' }
+  }}>
+  This Title is Spark Animated
+</h1>
+```
 
 ## Animated Less-Basic Example with easing (no formulas)
 
-    <SparkScroll.h1
-      timeline={{
-        ease:'easeOutQuad',
-        120:{opacity:'0'},
-        121:{opacity:'0.8', top:'151px', color:'#fff'},
-        140:{opacity:'1.0', top:'0px', color:'#444'}
-      }}>
-      This Title is Sparky
-    </h1>
-
+```jsx
+<SparkScroll.h1
+  timeline={{
+    ease:'easeOutQuad',
+    120:{opacity:'0'},
+    121:{opacity:'0.8', top:'151px', color:'#fff'},
+    140:{opacity:'1.0', top:'0px', color:'#444'}
+  }}>
+  This Title is Sparky
+</h1>
+```
 
 ## Animated Example with Override element-wide easing at a specific keyframe (with formulas)
 
-    <SparkScroll.h1
-      timeline={{
-        ease:'easeOutQuad',
-        topTop:{opacity:'0'},
-        centerCenter:{opacity:'0.8', top:'151px', color:'#fff'},
-        bottomBottom:{opacity:'1.0', top:'0px', color:'#444', ease: 'linear'}
-      }}>
-      This Title is Sparky
-    </h1>
-
+```jsx
+<SparkScroll.h1
+  timeline={{
+    ease:'easeOutQuad',
+    topTop:{opacity:'0'},
+    centerCenter:{opacity:'0.8', top:'151px', color:'#fff'},
+    bottomBottom:{opacity:'1.0', top:'0px', color:'#444', ease: 'linear'}
+  }}>
+  This Title is Sparky
+</h1>
+```
 
 ## Callback on Scroll Event
 
@@ -220,9 +231,11 @@ between 0 and 1 representing the progress of scroll within the limits of the max
 scroll positions of the `timeline` property. The simplest use of the `callback` property
 would look something like this:
 
-    <SparkScroll.div
-      callback={ ratio => console.log('callback @ ' + ratio) }
-      timeline={{ topBottom:0, topTop:0 }} />
+```jsx
+<SparkScroll.div
+  callback={ ratio => console.log('callback @ ' + ratio) }
+  timeline={{ topBottom:0, topTop:0 }} />
+```
 
 When `react-spark-scroll` calls the callback function, the `ratio` is calculated based on the current scroll position,
 and the `topBottom` and `topTop` formulas.
@@ -231,15 +244,17 @@ Note that in the preceding example instead of assigning an object to the keyfram
 assign `0`. However, if we wanted to use a callback while at the same time taking advantage of *action* and
 *animation* properties we could do something like this:
 
-    <SparkScroll.h1
-      callback={ ratio => console.log('callback @ ' + ratio) }
-      timeline={{
-        topTop:{ opacity: 0 },
-        topCenter:{ opacity: 0.3 },
-        topBottom:{ opacity: 1, onUp: _ => console.log('scrolling up') }
-      }}>
-      This Title is Spark
-    </h1>
+```jsx
+<SparkScroll.h1
+  callback={ ratio => console.log('callback @ ' + ratio) }
+  timeline={{
+    topTop:{ opacity: 0 },
+    topCenter:{ opacity: 0.3 },
+    topBottom:{ opacity: 1, onUp: _ => console.log('scrolling up') }
+  }}>
+  This Title is Spark
+</h1>
+```
 
 Note that in this example, the `callback`'s `ratio` argument
 is calculated using the `topTop` and `topBottom` formulas because they are at the extremes of the
@@ -258,26 +273,30 @@ Custom actions may be added via the options object of the react-spark-scroll fac
 function, utilizing the `actions` property. For example, we could create a `log` action
 that simply logs a message to the console whenever it's activated:
 
-    var sparkScroll = require('react-spark-scroll/spark-scroll-rekapi')({
-      actions: {
-        log: {
-          down(o) {
-            console.log(`spark: hit keyframe [ ${o.formula} ] scrolling down. value: ${o.val}`);
-          }
-          up(o) {
-            console.log(`spark: hit keyframe [ ${o.formula} ] scrolling up. value: ${o.val}`);
-          }
-        }
+```jsx
+var sparkScroll = require('react-spark-scroll/spark-scroll-rekapi')({
+  actions: {
+    log: {
+      down(o) {
+        console.log(`spark: hit keyframe [ ${o.formula} ] scrolling down. value: ${o.val}`);
+      }
+      up(o) {
+        console.log(`spark: hit keyframe [ ${o.formula} ] scrolling up. value: ${o.val}`);
       }
     }
+  }
+}
+```
 
 And putting the new action to use might look like this:
 
-    <SparkScroll.h1
-      timeline={{
-        topBottom: {opacity: 0, log: 'foo'},
-        centerCenter: {opacity: 1, log: 'bar'}
-      }}>fade</SparkScroll.h1>
+```jsx
+<SparkScroll.h1
+  timeline={{
+    topBottom: {opacity: 0, log: 'foo'},
+    centerCenter: {opacity: 1, log: 'bar'}
+  }}>fade</SparkScroll.h1>
+```
 
 When scrolling up and down we'd see in the console:
 
@@ -294,53 +313,55 @@ option to `true`.
 
 Here are all of the formulas that ship with react-spark-scroll:
 
-    const _sparkFormulas = {
+```jsx
+const _sparkFormulas = {
 
-      // top of the element hits the top of the viewport
-      topTop(element, container, rect, containerRect, offset) {
-        return ~~(rect.top - containerRect.top + offset);
-      },
+  // top of the element hits the top of the viewport
+  topTop(element, container, rect, containerRect, offset) {
+    return ~~(rect.top - containerRect.top + offset);
+  },
 
-      // top of the element hits the center of the viewport
-      topCenter(element, container, rect, containerRect, offset) {
-        return ~~(rect.top - containerRect.top - container.clientHeight / 2 + offset);
-      },
+  // top of the element hits the center of the viewport
+  topCenter(element, container, rect, containerRect, offset) {
+    return ~~(rect.top - containerRect.top - container.clientHeight / 2 + offset);
+  },
 
-      // top of the element hits the bottom of the viewport
-      topBottom(element, container, rect, containerRect, offset) {
-        return ~~(rect.top - containerRect.top - container.clientHeight + offset);
-      },
+  // top of the element hits the bottom of the viewport
+  topBottom(element, container, rect, containerRect, offset) {
+    return ~~(rect.top - containerRect.top - container.clientHeight + offset);
+  },
 
-      // center of the element hits the top of the viewport
-      centerTop(element, container, rect, containerRect, offset) {
-        return ~~(rect.top + rect.height / 2 - containerRect.top + offset);
-      },
+  // center of the element hits the top of the viewport
+  centerTop(element, container, rect, containerRect, offset) {
+    return ~~(rect.top + rect.height / 2 - containerRect.top + offset);
+  },
 
-      // center of the element hits the center of the viewport
-      centerCenter(element, container, rect, containerRect, offset) {
-        return ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight / 2 + offset);
-      },
+  // center of the element hits the center of the viewport
+  centerCenter(element, container, rect, containerRect, offset) {
+    return ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight / 2 + offset);
+  },
 
-      // center of the element hits the bottom of the viewport
-      centerBottom(element, container, rect, containerRect, offset) {
-        return ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight + offset);
-      },
+  // center of the element hits the bottom of the viewport
+  centerBottom(element, container, rect, containerRect, offset) {
+    return ~~(rect.top + rect.height / 2 - containerRect.top - container.clientHeight + offset);
+  },
 
-      // bottom of the element hits the top of the viewport
-      bottomTop(element, container, rect, containerRect, offset) {
-        return ~~(rect.bottom - containerRect.top + offset);
-      },
+  // bottom of the element hits the top of the viewport
+  bottomTop(element, container, rect, containerRect, offset) {
+    return ~~(rect.bottom - containerRect.top + offset);
+  },
 
-      // bottom of the element hits the bottom of the viewport
-      bottomBottom(element, container, rect, containerRect, offset) {
-        return ~~(rect.bottom - containerRect.top - container.clientHeight + offset);
-      },
+  // bottom of the element hits the bottom of the viewport
+  bottomBottom(element, container, rect, containerRect, offset) {
+    return ~~(rect.bottom - containerRect.top - container.clientHeight + offset);
+  },
 
-      // bottom of the element hits the center of the viewport
-      bottomCenter(element, container, rect, containerRect, offset) {
-        return ~~(rect.bottom - containerRect.top - container.clientHeight / 2 + offset);
-      }
-    };
+  // bottom of the element hits the center of the viewport
+  bottomCenter(element, container, rect, containerRect, offset) {
+    return ~~(rect.bottom - containerRect.top - container.clientHeight / 2 + offset);
+  }
+};
+```
 
 ## custom formulas
 
@@ -356,17 +377,19 @@ on any of the following objects:
 Custom formulas can be added via the options object of the react-spark-scroll factory function,
 utilizing the `formulas` property. For example:
 
-    var sparkScroll = require('react-spark-scroll/spark-scroll-rekapi')({
-      invalidateAutomatically: true
-      formulas: {
+```jsx
+var sparkScroll = require('react-spark-scroll/spark-scroll-rekapi')({
+  invalidateAutomatically: true
+  formulas: {
 
-        //similar to the built-in topBottom formula, except that offset
-        // is calculated as a percentage of the viewport height
+    //similar to the built-in topBottom formula, except that offset
+    // is calculated as a percentage of the viewport height
 
-        topBottomPct: (element, container, rect, containerRect, offset) =>
-          ~~(rect.bottom - containerRect.top + offset*containerRect.clientHeight/100)
-      }
-    });
+    topBottomPct: (element, container, rect, containerRect, offset) =>
+      ~~(rect.bottom - containerRect.top + offset*containerRect.clientHeight/100)
+  }
+});
+```
 
 ## Custom Animation Engine
 
@@ -377,15 +400,17 @@ where only one option is *required*: `animator`. `animator` should be an object 
 animator. Included with `react-spark-scroll` are two different animators: Rekapi and GSAP. Here
 is an example of how the GSAP animator can be used to bootstrap the factory method:
 
-    const _factory = require('react-spark-scroll');
+```jsx
+const _factory = require('react-spark-scroll');
 
-    function factory(options) {
-      return _factory(assign({
-        animator: {
-          instance: () => new GSAPAnimator()
-        }
-      }, options));
+function factory(options) {
+  return _factory(assign({
+    animator: {
+      instance: () => new GSAPAnimator()
     }
+  }, options));
+}
+```
 
 Note that we've created another factory method to wrap the `react-spark-scroll` factory method
 so that additional options may be passed in.
