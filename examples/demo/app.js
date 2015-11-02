@@ -1,5 +1,6 @@
 var React = require('react');
-var PureRenderMixin = require('react/addons').addons.PureRenderMixin;
+var ReactDOM = require('react-dom');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 var {SparkScroll, SparkProxy} = require('./app-spark');
 var cx = require('classnames');
 
@@ -14,7 +15,7 @@ var Hero = React.createClass({
 
   componentDidMount() {
     // initialize svg
-    var node = React.findDOMNode(this.refs.sparkPath);
+    var node = this.refs.sparkPath;
     var length = ~~ node.getTotalLength();
     this.offsetTarget = length;
     node.style.strokeDasharray = length + ' ' + length;
@@ -267,4 +268,4 @@ var App = React.createClass({
   }
 });
 
-React.render(<App/>, document.getElementById('example'));
+ReactDOM.render(<App/>, document.getElementById('example'));
