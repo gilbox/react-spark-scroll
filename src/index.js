@@ -1,4 +1,5 @@
 const React = require('react');
+const ReactDOM = require('react-dom');
 const _ = require('lodash');
 const sparkFactory = require('./spark');
 
@@ -23,7 +24,7 @@ function factory(options) {
     },
 
     componentDidMount() {
-      var element = React.findDOMNode(this);
+      var element = ReactDOM.findDOMNode(this);
 
       if (this.props.proxy) {
         spark(
@@ -51,7 +52,7 @@ function factory(options) {
     },
 
     componentDidMount() {
-      proxyElements[this.props.proxyId] = React.findDOMNode(this);
+      proxyElements[this.props.proxyId] = ReactDOM.findDOMNode(this);
     },
 
     componentWillUnmount() {

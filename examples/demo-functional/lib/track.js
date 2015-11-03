@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 
 export const defaultRect = { top: 0, bottom: 0, left: 0, right: 0, width: 0, height: 0 };
 const identity = x => x;
@@ -31,7 +32,7 @@ export class Track extends Component {
   }
   
   componentWillReceiveProps() {
-    const node = React.findDOMNode(this.nodeRef);
+    const node = ReactDOM.findDOMNode(this.nodeRef);
     const rect = node.getBoundingClientRect();
     this.setState({rect});
   }
@@ -89,7 +90,7 @@ export class TrackedDiv extends Component {
   }
   
   componentWillReceiveProps() {
-    const node = React.findDOMNode(this.div);
+    const node = ReactDOM.findDOMNode(this.div);
     const rect = node.getBoundingClientRect();
     this.setState({rect});
   }
