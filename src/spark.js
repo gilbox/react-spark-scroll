@@ -302,10 +302,18 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
     window.addEventListener('resize', onInvalidate, false);
     eventEmitter.on('invalidate', onInvalidate);
 
+    eventEmitter.once('cleanup', function() {
+        window.removeEventListener('scroll', onScroll);
+        window.removeEventListener('resize', onInvalidate);
+        eventEmitter.removeListener('invalidate', onInvalidate)
+    });
+
     // delay parse a frame to allow proxy to render
     animationFrame.request(parseData.bind(null,timeline));
 
   };
+  
+  spark.cleanup = () => eventEmitter.emit('cleanup');
 
   spark.invalidate = () => eventEmitter.emit('invalidate');
 
