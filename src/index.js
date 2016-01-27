@@ -35,7 +35,12 @@ function factory(options) {
       } else {
         spark(element, () => element, this.props.timeline, this.props);
       }
+    },
+
+    componentWillUnmount() {
+        spark.cleanup();
     }
+
   });
 
   const SparkScroll = sparkScrollFactory('div');
