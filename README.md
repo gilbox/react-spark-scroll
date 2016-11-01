@@ -534,3 +534,20 @@ required by `GSAPAnimator`. Load those files in however you wish, and then copy
 - [spark-scroll-ease](https://github.com/gilbox/spark-scroll/blob/master/src/spark-scroll.coffee#L213)
   attribute (Not really liking this feature)
   
+
+## Contributing
+
+### Publishing to NPM
+
+- First make sure to bump the version number in `package.json` in accordance with semantic versioning practices. If you think a major version bump is warranted, go for it!
+
+        # preparation
+        npm run build-npm-all
+        
+        # actually publish to npm !!! VERY IMPORTANT Do NOT run `npm publish`, !!!
+        npm run publish
+
+- Create a git tag and publish it
+
+        git tag vVERSION.NUMBER.WHATEVER
+        git push origin vVERSION.NUMBER.WHATEVER
