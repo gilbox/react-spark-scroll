@@ -1,6 +1,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const _ = require('lodash');
+const _isString = require('lodash/isString');
 const sparkFactory = require('./spark');
 
 function factory(options) {
@@ -14,7 +14,7 @@ function factory(options) {
     } = spark;
 
   const sparkScrollFactory = defaultComponent => React.createClass({
-    displayName: 'SparkScroll' + (_.isString(defaultComponent) ? defaultComponent : defaultComponent.displayName),
+    displayName: 'SparkScroll' + (_isString(defaultComponent) ? defaultComponent : defaultComponent.displayName),
 
     render () {
       var Component = this.props.component || defaultComponent;
@@ -47,7 +47,7 @@ function factory(options) {
   SparkScroll.div = SparkScroll;
 
   const sparkProxyFactory = defaultComponent => React.createClass({
-    displayName: 'SparkProxy.' + (_.isString(defaultComponent) ? defaultComponent : defaultComponent.displayName),
+    displayName: 'SparkProxy.' + (_isString(defaultComponent) ? defaultComponent : defaultComponent.displayName),
 
     render () {
       var Component = this.props.component || defaultComponent;
