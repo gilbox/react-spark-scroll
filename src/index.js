@@ -15,9 +15,7 @@ function factory(options) {
 
   const sparkScrollFactory = (defaultComponent) => {
     return class SparkScroll extends React.Component {
-      constructor(props) {
-        super(props);
-      }
+      
       render () {
         var Component = this.props.component || defaultComponent;
         const { callback, component, proxy, timeline, children, ...rest } = this.props
@@ -50,9 +48,6 @@ function factory(options) {
 
   const sparkProxyFactory = (defaultComponent) => {
     return class SparkProxy extends React.Component {
-      constructor(props) {
-        super(props);
-      }
 
       render () {
         var Component = this.props.component || defaultComponent;
