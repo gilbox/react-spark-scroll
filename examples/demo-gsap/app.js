@@ -1,17 +1,13 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
 var {SparkScroll, SparkProxy} = require('./app-spark');
 var cx = require('classnames');
 
-var Hero = React.createClass({
-  mixins: [PureRenderMixin],
+class Hero extends React.Component {
 
-  getInitialState() {
-    return {
-      strokeDashOffset: 0
-    }
-  },
+  state = {
+    strokeDashOffset: 0
+  }
 
   componentDidMount() {
     // initialize svg
@@ -19,7 +15,7 @@ var Hero = React.createClass({
     var length = ~~ node.getTotalLength();
     this.offsetTarget = length;
     node.style.strokeDasharray = length + ' ' + length;
-  },
+  }
 
   render() {
     return (
@@ -60,23 +56,20 @@ var Hero = React.createClass({
       </SparkProxy.div>
     )
   }
-});
+}
 
-var App = React.createClass({
-  mixins: [PureRenderMixin],
+class App extends React.Component {
 
-  getInitialState() {
-    return {
-      actionType: null,
-      text: 'slide',
-      unpinHide: true,
-      slideHide: true,
-      pinPin: false,
-      pinUnpin: false
-    }
-  },
+  state = {
+    actionType: null,
+    text: 'slide',
+    unpinHide: true,
+    slideHide: true,
+    pinPin: false,
+    pinUnpin: false
+  }
 
-  render: function () {
+  render() {
     var styles = {
       minHeight:'5000px'
     };
@@ -265,6 +258,6 @@ var App = React.createClass({
       </div>
     );
   }
-});
+}
 
 ReactDOM.render(<App/>, document.getElementById('example'));
