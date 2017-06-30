@@ -20,8 +20,9 @@ function factory(options) {
       }
       render () {
         var Component = this.props.component || defaultComponent;
+        const { callback, component, proxy, timeline, children, ...rest } = this.props
         return (
-          <Component {...this.props}>{this.props.children}</Component>
+          <Component {...rest}>{this.props.children}</Component>
         );
       }
       componentDidMount() {
@@ -55,8 +56,9 @@ function factory(options) {
 
       render () {
         var Component = this.props.component || defaultComponent;
+        const { component, proxyId, children, ...rest } = this.props
         return (
-          <Component {...this.props}>{this.props.children}</Component>
+          <Component {...rest}>{this.props.children}</Component>
         );
       }
 
