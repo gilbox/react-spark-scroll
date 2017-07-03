@@ -13,57 +13,59 @@ function factory(options) {
     disableInvalidationInterval
     } = spark;
 
-  const sparkScrollFactory = defaultComponent => React.createClass({
-    displayName: 'SparkScroll' + (_isString(defaultComponent) ? defaultComponent : defaultComponent.displayName),
-
-    render () {
-      var Component = this.props.component || defaultComponent;
-      return (
-        <Component {...this.props}>{this.props.children}</Component>
-      );
-    },
-
-    componentDidMount() {
-      var element = ReactDOM.findDOMNode(this);
-
-      if (this.props.proxy) {
-        spark(
-          element,
-          () => proxyElements[this.props.proxy] || element,
-          this.props.timeline,
-          this.props);
-      } else {
-        spark(element, () => element, this.props.timeline, this.props);
+  const sparkScrollFactory = (defaultComponent) => {
+    return class SparkScroll extends React.Component {
+      
+      render () {
+        var Component = this.props.component || defaultComponent;
+        const { callback, component, proxy, timeline, children, ...rest } = this.props
+        return (
+          <Component {...rest}>{this.props.children}</Component>
+        );
       }
-    },
+      componentDidMount() {
+        var element = ReactDOM.findDOMNode(this);
 
-    componentWillUnmount() {
-        spark.cleanup();
+        if (this.props.proxy) {
+          spark(
+            element,
+            () => proxyElements[this.props.proxy] || element,
+            this.props.timeline,
+            this.props);
+        } else {
+          spark(element, () => element, this.props.timeline, this.props);
+        }
+      }
+
+      componentWillUnmount() {
+          spark.cleanup();
+      }
     }
-
-  });
+  }
 
   const SparkScroll = sparkScrollFactory('div');
   SparkScroll.div = SparkScroll;
 
-  const sparkProxyFactory = defaultComponent => React.createClass({
-    displayName: 'SparkProxy.' + (_isString(defaultComponent) ? defaultComponent : defaultComponent.displayName),
+  const sparkProxyFactory = (defaultComponent) => {
+    return class SparkProxy extends React.Component {
 
-    render () {
-      var Component = this.props.component || defaultComponent;
-      return (
-        <Component {...this.props}>{this.props.children}</Component>
-      );
-    },
+      render () {
+        var Component = this.props.component || defaultComponent;
+        const { component, proxyId, children, ...rest } = this.props
+        return (
+          <Component {...rest}>{this.props.children}</Component>
+        );
+      }
 
-    componentDidMount() {
-      proxyElements[this.props.proxyId] = ReactDOM.findDOMNode(this);
-    },
+      componentDidMount() {
+        proxyElements[this.props.proxyId] = ReactDOM.findDOMNode(this);
+      }
 
-    componentWillUnmount() {
-      delete proxyElements[this.props.proxyId];
+      componentWillUnmount() {
+        delete proxyElements[this.props.proxyId];
+      }
     }
-  });
+  }
 
   const SparkProxy = sparkProxyFactory('div');
   SparkProxy.div = SparkProxy;

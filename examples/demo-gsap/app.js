@@ -1,17 +1,13 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-var PureRenderMixin = require('react-addons-pure-render-mixin');
 var {SparkScroll, SparkProxy} = require('./app-spark');
 var cx = require('classnames');
 
-var Hero = React.createClass({
-  mixins: [PureRenderMixin],
+class Hero extends React.Component {
 
-  getInitialState() {
-    return {
-      strokeDashOffset: 0
-    }
-  },
+  state = {
+    strokeDashOffset: 0
+  }
 
   componentDidMount() {
     // initialize svg
@@ -19,7 +15,7 @@ var Hero = React.createClass({
     var length = ~~ node.getTotalLength();
     this.offsetTarget = length;
     node.style.strokeDasharray = length + ' ' + length;
-  },
+  }
 
   render() {
     return (
@@ -60,23 +56,20 @@ var Hero = React.createClass({
       </SparkProxy.div>
     )
   }
-});
+}
 
-var App = React.createClass({
-  mixins: [PureRenderMixin],
+class App extends React.Component {
 
-  getInitialState() {
-    return {
-      actionType: null,
-      text: 'slide',
-      unpinHide: true,
-      slideHide: true,
-      pinPin: false,
-      pinUnpin: false
-    }
-  },
+  state = {
+    actionType: null,
+    text: 'slide',
+    unpinHide: true,
+    slideHide: true,
+    pinPin: false,
+    pinUnpin: false
+  }
 
-  render: function () {
+  render() {
     var styles = {
       minHeight:'5000px'
     };
@@ -88,8 +81,7 @@ var App = React.createClass({
           <img
             style={{position: 'absolute', top: 0, right: 0, border: 0}}
             src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67"
-            alt="Fork me on GitHub"
-            dataCanonicalSrc="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" /></a>
+            alt="Fork me on GitHub" /></a>
 
         <Hero />
 
@@ -266,6 +258,6 @@ var App = React.createClass({
       </div>
     );
   }
-});
+}
 
 ReactDOM.render(<App/>, document.getElementById('example'));
