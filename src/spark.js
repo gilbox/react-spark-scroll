@@ -1,19 +1,18 @@
-const assign = require('object-assign');
 const AnimationFrame = require('animation-frame');
 const EventEmitter = require('events').EventEmitter;
-
-const _clone = require('lodash/clone');
-const _extend = require('lodash/extend');
-const _isArray = require('lodash/isArray');
-const _isObject = require('lodash/isObject');
+const _isArray = x => x instanceof Array;
+function _isObject(value) {
+  var type = typeof value;
+  return value != null && (type == 'object' || type == 'function');
+}
 
 function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomatically}) {
 
   const allowAnimation = !! animator;
 
-  const sparkFormulas = formulas ? assign({}, _sparkFormulas, formulas) : _sparkFormulas;
-  const sparkActionProps = actionProps ? assign({}, _sparkActionProps, actionProps) : _sparkActionProps;
-  const sparkSetup = setup ? assign({}, _sparkSetup, setup) : _sparkSetup;
+  const sparkFormulas = formulas ? {..._sparkFormulas, ...formulas} : _sparkFormulas;
+  const sparkActionProps = actionProps ? {..._sparkActionProps, ...actionProps} : _sparkActionProps;
+  const sparkSetup = setup ? {..._sparkSetup, ...setup} : _sparkSetup;
 
   const eventEmitter = new EventEmitter();
   eventEmitter.setMaxListeners(0);
@@ -172,7 +171,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
       if (!data) {
         return;
       }
-      data = _clone(data);
+      data = {...data};
 
       if (allowAnimation) {
         actor.removeAllKeyframes();
@@ -188,7 +187,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
       const containerRect = container.getBoundingClientRect();
       for (scrY in data) {
         let keyFrame = data[scrY] || {};
-        keyFrame = _clone(keyFrame);
+        keyFrame = {...keyFrame};
         let actionCount = 0;
         c = scrY.charCodeAt(0);
 
@@ -239,7 +238,7 @@ function sparkFactory({animator, formulas, actionProps, setup, invalidateAutomat
             }
             o = {};
             o[k] = v[1];
-            _extend(ease, o);
+            Object.assign(ease, o);
             keyFrame.anims[k] = v[0];
             delete keyFrame[k];
           }

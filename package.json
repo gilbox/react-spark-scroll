@@ -57,8 +57,7 @@
   "dependencies": {
     "animation-frame": "^0.3.0",
     "events": "^1.0.2",
-    "lodash": "^4.11.0",
-    "object-assign": "^4.1.1"
+    "lodash": "^3.10.1"
   },
   "tags": [
     "react",

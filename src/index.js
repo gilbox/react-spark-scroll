@@ -1,7 +1,8 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-const _isString = require('lodash/isString');
 const sparkFactory = require('./spark');
+
+const _isString = x => typeof x === 'string';
 
 function factory(options) {
 

@@ -6,16 +6,15 @@
 // load in a subset of TweenMax
 require('gsap');
 
-const assign = require('object-assign');
 const _factory = require('react-spark-scroll');
 const GSAPAnimator = require('./gsap-animator');
 
 function factory(options) {
-  return _factory(assign({
+  return _factory({
     animator: {
       instance: () => new GSAPAnimator()
     }
-  }, options));
+  , ...options });
 }
 
 module.exports = factory;
