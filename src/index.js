@@ -2,8 +2,6 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const sparkFactory = require('./spark');
 
-const _isString = x => typeof x === 'string';
-
 function factory(options) {
 
   const proxyElements = {};
