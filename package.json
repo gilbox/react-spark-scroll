@@ -1,6 +1,6 @@
 {
   "name": "react-spark-scroll",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "description": "Scroll-based animation and actions for React",
   "main": "src",
   "repository": {
